@@ -1,6 +1,7 @@
 {
   "title": "Mathematics Characteristics Database",
-  "date": "Oct — Nov 2025",
-  "description": "Developed an end-to-end data pipeline and web app using Streamlit to replace traditional forms.",
-  "tags": ["Python", "Streamlit", "Data Visualization"]
+  "date": "2025",
+  "description": "Developed an end-to-end data pipeline and web-based application using Streamlit to replace traditional forms.",
+  "url": "https://dabase-karaktermtk.streamlit.app/",
+  "tags": ["Python", "Streamlit"]
 }
