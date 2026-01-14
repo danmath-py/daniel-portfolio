@@ -17,7 +17,6 @@
             --card-bg: #ffffff;
         }
 
-        /* Dark Mode Theme Variables */
         body.dark-mode {
             --bg: #1a1a1a;
             --text: #f0f0f0;
@@ -127,7 +126,6 @@
             line-height: 0.85;
         }
 
-        /* Hero & Stochastic Lab Layout */
         .hero-grid {
             display: grid;
             grid-template-columns: 1fr 1.2fr;
@@ -204,6 +202,14 @@
             letter-spacing: 0.5px;
         }
 
+        /* Services Grid */
+        .service-card {
+            border: 1px solid var(--line);
+            padding: 30px;
+            transition: 0.3s;
+        }
+        .service-card:hover { background: var(--accent); color: white; border-color: var(--accent); }
+
         .exp-item {
             display: grid;
             grid-template-columns: 200px 1fr;
@@ -244,6 +250,7 @@
         <div class="nav-links">
             <a href="#projects">Projects</a>
             <a href="#experience">Experience</a>
+            <a href="#services">Freelance</a>
             <a href="#cv">CV / Contact</a>
             <button onclick="toggleTheme()" id="theme-btn">Dark</button>
         </div>
@@ -270,16 +277,8 @@
         function initStochasticLab() {
             const dIn = document.getElementById('drift'), vIn = document.getElementById('vol');
             if (!dIn) return;
-            dIn.oninput = (e) => { 
-                drift = parseFloat(e.target.value); 
-                document.getElementById('driftVal').innerText = drift; 
-                runSimulation(); 
-            };
-            vIn.oninput = (e) => { 
-                vol = parseFloat(e.target.value); 
-                document.getElementById('volVal').innerText = vol; 
-                runSimulation(); 
-            };
+            dIn.oninput = (e) => { drift = parseFloat(e.target.value); document.getElementById('driftVal').innerText = drift; runSimulation(); };
+            vIn.oninput = (e) => { vol = parseFloat(e.target.value); document.getElementById('volVal').innerText = vol; runSimulation(); };
             runSimulation();
         }
 
@@ -290,21 +289,16 @@
             canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight;
             ctx.clearRect(0,0, canvas.width, canvas.height);
             
-            // Generate multiple paths
             for(let i=0; i<10; i++) {
                 let S = canvas.height/2, steps = 100, dt = 1/steps;
                 ctx.beginPath();
                 ctx.strokeStyle = i === 0 ? 'var(--accent)' : 'rgba(150,150,150,0.3)';
                 ctx.lineWidth = i === 0 ? 3 : 1;
                 ctx.moveTo(0, S);
-                
                 for(let t=1; t<=steps; t++) {
-                    // Box-Muller transform for Gaussian noise
                     let u1 = Math.random(), u2 = Math.random();
                     let z = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
-                    
-                    // GBM Formula: dS = S * (mu*dt + sigma*sqrt(dt)*z)
-                    S -= S * (drift * dt + vol * Math.sqrt(dt) * z); 
+                    S -= S * (drift * dt + vol * Math.sqrt(dt) * z);
                     ctx.lineTo((t/steps)*canvas.width, S);
                 }
                 ctx.stroke();
@@ -320,7 +314,7 @@
                                 <h1>Daniel<br>Situmorang</h1>
                                 <p style="margin-top:20px; font-size:1.1rem;">
                                     Chairman of **Gumatika**. 
-                                    Math student at **IPB University** focusing on computational modeling and quantitative finance.
+                                    Math student at **IPB University** specializing in computational modeling and quantitative finance.
                                 </p>
                                 <div class="lab-controls">
                                     <label>Drift (μ): <span id="driftVal">0.05</span></label>
@@ -333,11 +327,27 @@
                             <canvas id="stochasticCanvas" class="reveal"></canvas>
                         </div>
                     </div>
+                `;
+            },
+
+            async services() {
+                return `
+                    <div class="page-header reveal"><h1>Freelance<br>Services</h1></div>
                     <div class="content-section reveal">
-                        <p style="font-size:1.1rem;">Currently serving as **Chairman of Gumatika**. Based in **Bekasi, West Java**.</p>
-                        <div style="margin-top:40px; display:flex; gap:25px;">
-                            <a href="https://linkedin.com/in/danieljas" target="_blank" style="color:var(--text); font-size:1.8rem;"><i class="fa-brands fa-linkedin"></i></a>
-                            <a href="https://github.com/danmath-py/" target="_blank" style="color:var(--text); font-size:1.8rem;"><i class="fa-brands fa-github"></i></a>
+                        <p style="margin-bottom:40px; max-width:600px; font-size:1.1rem;">Providing expert mathematical modeling, data analysis, and technical typesetting for global clients.</p>
+                        <div class="grid-layout">
+                            <a href="https://www.fiverr.com/YOUR_USER" target="_blank" class="service-card" style="text-decoration:none; color:inherit;">
+                                <h3 style="font-family:'Inria Sans'; text-transform:uppercase;">Fiverr ↗</h3>
+                                <p style="font-size:0.9rem;">Order structured gigs for LaTeX typesetting and Python scripting.</p>
+                            </a>
+                            <a href="https://www.upwork.com/freelancers/~YOUR_ID" target="_blank" class="service-card" style="text-decoration:none; color:inherit;">
+                                <h3 style="font-family:'Inria Sans'; text-transform:uppercase;">Upwork ↗</h3>
+                                <p style="font-size:0.9rem;">Long-term quantitative analysis and mathematical research projects.</p>
+                            </a>
+                            <a href="https://wa.me/6281298346299" target="_blank" class="service-card" style="text-decoration:none; color:inherit; background:var(--accent); color:white;">
+                                <h3 style="font-family:'Inria Sans'; text-transform:uppercase;">WhatsApp Direct ↗</h3>
+                                <p style="font-size:0.9rem;">Urgent inquiries or direct collaboration for local projects.</p>
+                            </a>
                         </div>
                     </div>
                 `;
@@ -350,19 +360,16 @@
                         const res = await fetch(`projects/${file}`);
                         const data = await res.json();
                         const tagsHtml = data.tags ? data.tags.map(t => `<span class="tag">${t}</span>`).join('') : '';
-                        const linkText = data.confidential ? "CONFIDENTIAL • LINKEDIN ↗" : "VIEW PROJECT ↗";
-                        html += `
-                            <a href="${data.url}" target="_blank" class="project-card reveal">
-                                <div>
-                                    <div style="font-size:0.75rem; font-weight:700; text-transform:uppercase; margin-bottom:15px; color:#666;">${data.date}</div>
-                                    <div style="font-family:'Inria Sans'; font-size:1.6rem; text-transform:uppercase; line-height:1.1;">${data.confidential ? '🔒 ' : ''}${data.title}</div>
-                                    <p style="font-size:0.95rem; margin-top:20px;">${data.description}</p>
-                                    <div class="tag-container">${tagsHtml}</div>
-                                </div>
-                                <div style="font-size:0.8rem; font-weight:700; color:var(--accent); text-transform:uppercase; margin-top:20px;">${linkText}</div>
-                            </a>
-                        `;
-                    } catch(e) { console.error(e); }
+                        html += `<a href="${data.url}" target="_blank" class="project-card reveal">
+                            <div>
+                                <div style="font-size:0.75rem; font-weight:700; text-transform:uppercase; margin-bottom:15px; color:#666;">${data.date}</div>
+                                <div style="font-family:'Inria Sans'; font-size:1.6rem; text-transform:uppercase; line-height:1.1;">${data.confidential ? '🔒 ' : ''}${data.title}</div>
+                                <p style="font-size:0.95rem; margin-top:20px;">${data.description}</p>
+                                <div class="tag-container">${tagsHtml}</div>
+                            </div>
+                            <div style="font-size:0.8rem; font-weight:700; color:var(--accent); text-transform:uppercase;">${data.confidential ? "CONFIDENTIAL ↗" : "VIEW PROJECT ↗"}</div>
+                        </a>`;
+                    } catch(e) {}
                 }
                 return html + `</div>`;
             },
@@ -373,16 +380,14 @@
                     try {
                         const res = await fetch(`experience/${file}`);
                         const data = await res.json();
-                        html += `
-                            <div class="exp-item reveal">
-                                <div style="font-size:0.85rem; font-weight:700; color:#666; text-transform:uppercase;">${data.date}</div>
-                                <div>
-                                    <div style="font-family:'Inria Sans'; font-size:1.5rem; text-transform:uppercase; font-weight:700;">${data.title}</div>
-                                    <p style="font-size:1.1rem; margin-top:10px;">${data.description}</p>
-                                </div>
+                        html += `<div class="exp-item reveal">
+                            <div style="font-size:0.85rem; font-weight:700; color:#666; text-transform:uppercase;">${data.date}</div>
+                            <div>
+                                <div style="font-family:'Inria Sans'; font-size:1.5rem; text-transform:uppercase; font-weight:700;">${data.title}</div>
+                                <p style="font-size:1.1rem; margin-top:10px;">${data.description}</p>
                             </div>
-                        `;
-                    } catch(e) { console.error(e); }
+                        </div>`;
+                    } catch(e) {}
                 }
                 return html + `</div>`;
             },
@@ -395,16 +400,10 @@
                             <div>
                                 <h3 style="font-family:'Inria Sans'; text-transform:uppercase; margin-bottom:30px; font-size:1.8rem;">Direct Contact</h3>
                                 <p style="font-size:1.1rem;"><strong>Email:</strong> danielsitumo06@gmail.com</p>
-                                <p style="font-size:1.1rem;"><strong>Phone:</strong> +62 812 9834 6299</p>
                                 <p style="font-size:1.1rem;"><strong>Location:</strong> Bekasi, West Java, Indonesia</p>
-                                <div style="margin-top:30px; display:flex; gap:20px;">
-                                    <a href="https://linkedin.com/in/danieljas" target="_blank" style="color:var(--text); font-size:1.5rem;"><i class="fa-brands fa-linkedin"></i></a>
-                                    <a href="https://github.com/danmath-py/" target="_blank" style="color:var(--text); font-size:1.5rem;"><i class="fa-brands fa-github"></i></a>
-                                </div>
                             </div>
                             <div style="text-align:center; border: 2px dashed var(--line); padding: 50px;">
                                 <h3 style="font-family:'Inria Sans'; text-transform:uppercase; margin-bottom:20px;">Full Résumé</h3>
-                                <p style="font-size:1rem; margin-bottom:30px; color:#666;">Technical skills: Python, Julia, LaTeX, VBScript.</p>
                                 <a href="assets/CV.pdf" target="_blank" class="cv-download-btn">Download PDF ↗</a>
                             </div>
                         </div>
