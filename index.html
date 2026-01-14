@@ -5,259 +5,139 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daniel Situmorang | Portfolio System</title>
-    
     <link href="https://fonts.googleapis.com/css2?family=Inria+Sans:wght@700&family=Karla:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
-        :root {
-            --bg: #ffffff;
-            --text: #1a1a1a;
-            --accent: #0055ff;
-            --line: #000000;
+        :root { --bg: #ffffff; --text: #1a1a1a; --accent: #0055ff; --line: #000000; }
+        body { background-color: var(--bg); color: var(--text); font-family: 'Karla', sans-serif; margin: 0; overflow-x: hidden; }
+
+        /* Persistent Navigation */
+        nav {
+            position: fixed; top: 0; width: 100%; background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(10px); padding: 20px 10%; border-bottom: 1px solid #eee;
+            display: flex; justify-content: space-between; align-items: center; z-index: 1000;
         }
+        nav .logo { font-family: 'Inria Sans'; text-transform: uppercase; font-weight: 700; text-decoration: none; color: var(--text); }
+        nav .nav-links { display: flex; gap: 30px; }
+        nav .nav-links a { text-decoration: none; color: var(--text); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; }
 
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: 'Karla', sans-serif;
-            margin: 0;
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
+        /* Dynamic Content Container */
+        #view-container { margin-top: 80px; min-height: calc(100vh - 80px); }
 
-        /* Hero Section */
-        .hero {
-            height: 90vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 0 10%;
-            border-bottom: 2px solid var(--line);
-        }
-
-        h1 {
-            font-family: 'Inria Sans', sans-serif;
-            font-size: clamp(3rem, 8vw, 6rem);
-            line-height: 0.9;
-            text-transform: uppercase;
-            margin: 0;
-        }
-
-        .contact-bar {
-            margin-top: 2rem;
-            display: flex;
-            gap: 25px;
-        }
-
-        .social-icon {
-            font-size: 1.5rem;
-            color: var(--text);
-            text-decoration: none;
-            transition: all 0.2s ease;
-        }
-
-        .social-icon:hover {
-            color: var(--accent);
-            transform: translateY(-3px);
-        }
-
-        /* Carousel Styles */
-        h2 { 
-            font-family: 'Inria Sans', sans-serif; 
-            text-transform: uppercase; 
-            padding: 0 10%; 
-            margin-top: 80px;
-            font-size: 2rem;
-        }
-
-        .carousel-container {
-            display: flex;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            gap: 20px;
-            padding: 40px 10%;
-            scrollbar-width: none;
-        }
-
-        .carousel-container::-webkit-scrollbar { display: none; }
-
-        .project-card {
-            flex: 0 0 400px;
-            scroll-snap-align: start;
-            border: 2px solid var(--line);
-            padding: 30px;
-            text-decoration: none;
-            color: inherit;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            height: 380px;
-            transition: all 0.3s ease;
-        }
-
-        .project-card:hover {
-            background-color: var(--text);
-            color: var(--bg);
-        }
-
-        .project-card .date { font-size: 0.7rem; font-weight: 700; margin-bottom: 20px; text-transform: uppercase; }
-        .project-card .title { font-family: 'Inria Sans'; font-size: 1.5rem; text-transform: uppercase; line-height: 1.1; }
-        .project-card .desc { font-size: 0.9rem; margin-top: 15px; }
-
-        /* Experience Section */
-        section#experience { padding: 80px 10%; }
+        /* Reusable Swiss Styles */
+        .page-header { padding: 100px 10% 40px 10%; border-bottom: 2px solid var(--line); }
+        .page-header h1 { font-family: 'Inria Sans'; font-size: 4rem; text-transform: uppercase; margin: 0; line-height: 0.9; }
         
-        .exp-grid {
-            display: grid;
-            grid-template-columns: 200px 1fr;
-            gap: 40px;
-            margin-bottom: 40px;
-            border-top: 1px solid #eee;
-            padding-top: 20px;
-        }
+        .content-section { padding: 60px 10%; }
+        .grid-layout { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
 
-        /* CV Download Section */
-        #cv-section {
-            padding: 120px 10%;
-            text-align: center;
-            background-color: #f9f9f9;
-            border-top: 2px solid var(--line);
-        }
+        /* Fade-in Animation for page transitions */
+        .fade-in { animation: fadeIn 0.4s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .cv-download-btn {
-            display: inline-block;
-            padding: 20px 50px;
-            border: 3px solid var(--line);
-            color: var(--text);
-            text-decoration: none;
-            font-family: 'Inria Sans', sans-serif;
-            font-weight: 700;
-            text-transform: uppercase;
-            font-size: 1rem;
-            letter-spacing: 2px;
-            transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
-        }
-
-        .cv-download-btn:hover {
-            background-color: var(--text);
-            color: var(--bg);
-            transform: scale(1.05);
-        }
-
-        footer {
-            padding: 40px 10%;
-            font-size: 0.8rem;
-            color: #888;
-            border-top: 1px solid #eee;
-        }
-
-        @media (max-width: 768px) {
-            .project-card { flex: 0 0 85%; }
-            .exp-grid { grid-template-columns: 1fr; gap: 10px; }
-            .hero { padding: 0 5%; }
-            section#experience, #cv-section, footer { padding: 80px 5%; }
-        }
+        /* Mobile Adjustments */
+        @media (max-width: 768px) { nav { padding: 20px 5%; } .page-header h1 { font-size: 2.5rem; } }
     </style>
 </head>
 <body>
 
-    <div class="hero">
-        <h1>Daniel <br>Situmorang</h1>
-        <p style="max-width: 500px; margin-top: 20px; font-size: 1.1rem;">
-            Third-year Mathematics student at IPB University specializing in quantitative analysis, data modeling, and end-to-end data pipelines.
-        </p>
-        <div class="contact-bar">
-            <a href="https://linkedin.com/in/danieljas" target="_blank" class="social-icon">
-                <i class="fa-brands fa-linkedin-in"></i>
-            </a>
-            <a href="https://github.com/danmath-py/" target="_blank" class="social-icon">
-                <i class="fa-brands fa-github"></i>
-            </a>
-            <a href="https://instagram.com/dan.j.a.s" target="_blank" class="social-icon">
-                <i class="fa-brands fa-instagram"></i>
-            </a>
-            <a href="mailto:dansitumorang@apps.ipb.ac.id" class="social-icon">
-                <i class="fa-regular fa-envelope"></i>
-            </a>
+    <nav>
+        <a href="#home" class="logo">D. Situmorang</a>
+        <div class="nav-links">
+            <a href="#projects">Projects</a>
+            <a href="#experience">Experience</a>
+            <a href="#cv">CV</a>
         </div>
-    </div>
+    </nav>
 
-    <h2>Selected Projects</h2>
-    <div class="carousel-container" id="projects-container"></div>
-
-    <section id="experience">
-        <h2 style="padding:0; margin-top:0; border-bottom: 2px solid var(--line); padding-bottom: 10px;">Professional Experience</h2>
-        <div id="experience-container"></div>
-    </section>
-
-    <section id="cv-section">
-        <h2 style="padding: 0; margin-top: 0; border: none; font-size: 2.5rem;">Curriculum Vitae</h2>
-        <p style="max-width: 600px; margin: 0 auto 40px auto; font-size: 1.1rem;">
-            Review my full academic background in Applied Math and Finance, technical skills in Python and LaTeX, and leadership journey.
-        </p>
-        <a href="assets/CV (2).pdf" class="cv-download-btn" target="_blank">
-            Download Full CV (PDF) ↗
-        </a>
-    </section>
-
-    <footer>
-        © 2026 Daniel Juniro Aslacris Situmorang | Bekasi, West Java.
-    </footer>
+    <div id="view-container">
+        </div>
 
     <script>
-        async function loadPortfolio() {
-            const projectFiles = ['project1.json', 'project2.json', 'project3.json', 'project4.json'];
-            const expFiles = ['exp1.json', 'exp2.json', 'exp3.json'];
-            
-            const pContainer = document.getElementById('projects-container');
-            const eContainer = document.getElementById('experience-container');
+        // Data sources
+        const projectFiles = ['project1.json', 'project2.json', 'project3.json', 'project4.json'];
+        const expFiles = ['exp1.json', 'exp2.json', 'exp3.json'];
 
-            // Load Projects
-            for (const file of projectFiles) {
-                try {
+        const router = {
+            async home() {
+                return `
+                    <div class="page-header fade-in">
+                        <h1>Daniel<br>Situmorang</h1>
+                        <p style="margin-top:20px; max-width:500px;">Third-year Math undergrad at IPB University specializing in quantitative analysis[cite: 4, 45, 47]. Currently Chairman of Gumatika[cite: 6, 29].</p>
+                    </div>
+                    <div class="content-section fade-in">
+                        <p>Based in Bekasi, West Java. Passionate about Computational Mathematics and Financial Modeling.</p>
+                        <a href="#projects" style="color:var(--accent); font-weight:700; text-decoration:none;">VIEW FULL PORTFOLIO ↗</a>
+                    </div>
+                `;
+            },
+
+            async projects() {
+                let html = `<div class="page-header fade-in"><h1>Projects</h1></div><div class="content-section grid-layout fade-in">`;
+                for (const file of projectFiles) {
                     const res = await fetch(`projects/${file}`);
-                    if (!res.ok) throw new Error(`Project file missing: ${file}`);
                     const data = await res.json();
-                    
-                    const linkText = data.confidential ? "CONFIDENTIAL • LINKEDIN ↗" : "VIEW PROJECT ↗";
-                    const lockIcon = data.confidential ? "🔒 " : "";
-
-                    pContainer.innerHTML += `
-                        <a href="${data.url}" class="project-card" target="_blank">
+                    const linkText = data.confidential ? "CONFIDENTIAL ↗" : "LIVE DEMO ↗";
+                    html += `
+                        <div style="border: 2px solid var(--line); padding: 20px; display: flex; flex-direction: column; justify-content: space-between; height: 300px;">
                             <div>
-                                <div class="date">${data.date}</div>
-                                <div class="title">${lockIcon}${data.title}</div>
-                                <p class="desc">${data.description}</p>
+                                <div style="font-size:0.7rem; font-weight:700; margin-bottom:10px;">${data.date}</div>
+                                <div style="font-family:'Inria Sans'; font-size:1.4rem; text-transform:uppercase;">${data.confidential ? '🔒 ' : ''}${data.title}</div>
+                                <p style="font-size:0.85rem;">${data.description}</p>
                             </div>
-                            <div style="font-size: 0.7rem; font-weight:700; letter-spacing: 1px; color: var(--accent);">
-                                ${linkText}
-                            </div>
-                        </a>
+                            <a href="${data.url}" target="_blank" style="font-size:0.7rem; font-weight:700; color:var(--accent); text-decoration:none;">${linkText}</a>
+                        </div>
                     `;
-                } catch (err) { console.error(err); }
-            }
+                }
+                html += `</div>`;
+                return html;
+            },
 
-            // Load Experience
-            for (const file of expFiles) {
-                try {
+            async experience() {
+                let html = `<div class="page-header fade-in"><h1>Experience</h1></div><div class="content-section fade-in">`;
+                for (const file of expFiles) {
                     const res = await fetch(`experience/${file}`);
-                    if (!res.ok) throw new Error(`Experience file missing: ${file}`);
                     const data = await res.json();
-                    
-                    eContainer.innerHTML += `
-                        <div class="exp-grid">
-                            <div style="font-size: 0.8rem; font-weight:700; color:#666; text-transform: uppercase;">${data.date}</div>
+                    html += `
+                        <div style="display: grid; grid-template-columns: 200px 1fr; gap: 40px; margin-bottom: 40px; border-top: 1px solid #eee; padding-top: 20px;">
+                            <div style="font-size:0.8rem; font-weight:700; color:#666;">${data.date}</div>
                             <div>
                                 <div style="font-family:'Inria Sans'; font-size:1.2rem; text-transform:uppercase; font-weight:700;">${data.title}</div>
                                 <p style="font-size:0.9rem;">${data.description}</p>
                             </div>
                         </div>
                     `;
-                } catch (err) { console.error(err); }
+                }
+                html += `</div>`;
+                return html;
+            },
+
+            async cv() {
+                return `
+                    <div class="page-header fade-in"><h1>Curriculum<br>Vitae</h1></div>
+                    <div class="content-section fade-in" style="text-align:center;">
+                        <p>Available for data analyst or freelance quantitative roles.</p>
+                        <br>
+                        <a href="assets/CV (2).pdf" target="_blank" style="display:inline-block; padding:20px 50px; border:3px solid var(--line); color:var(--text); text-decoration:none; font-weight:700; text-transform:uppercase;">Download PDF ↗</a>
+                    </div>
+                `;
             }
+        };
+
+        async function handleRoute() {
+            const hash = window.location.hash.replace('#', '') || 'home';
+            const container = document.getElementById('view-container');
+            
+            if (router[hash]) {
+                container.innerHTML = await router[hash]();
+            } else {
+                window.location.hash = '#home';
+            }
+            window.scrollTo(0, 0);
         }
 
-        loadPortfolio();
+        window.addEventListener('hashchange', handleRoute);
+        window.addEventListener('load', handleRoute);
     </script>
 </body>
 </html>
