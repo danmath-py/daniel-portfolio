@@ -17,7 +17,6 @@
             --card-bg: #ffffff;
         }
 
-        /* Dark Mode Theme Variables */
         body.dark-mode {
             --bg: #1a1a1a;
             --text: #f0f0f0;
@@ -33,7 +32,7 @@
             margin: 0;
             overflow-x: hidden;
             line-height: 1.6;
-            transition: background-color 0.3s, color 0.3s;
+            transition: background-color 0.4s, color 0.4s;
         }
 
         /* Fixed Navigation */
@@ -74,9 +73,19 @@
             font-size: 0.8rem;
             font-weight: 700;
             text-transform: uppercase;
+            position: relative;
         }
 
-        /* Theme Toggle Button */
+        /* Nav Underline Animation */
+        nav .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px; left: 0; width: 0; height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+        nav .nav-links a:hover::after { width: 100%; }
+
         #theme-btn {
             background: none;
             border: 1px solid var(--line);
@@ -88,10 +97,25 @@
             padding: 4px 10px;
             transition: 0.2s;
         }
-
         #theme-btn:hover { background: var(--text); color: var(--bg); }
 
-        /* Page Layout Styles */
+        /* Animation System */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Staggered Delay for Grids */
+        .grid-layout > div:nth-child(1) { transition-delay: 0.1s; }
+        .grid-layout > div:nth-child(2) { transition-delay: 0.2s; }
+        .grid-layout > div:nth-child(3) { transition-delay: 0.3s; }
+
         #view-container { margin-top: 80px; min-height: calc(100vh - 80px); }
 
         .page-header {
@@ -109,7 +133,7 @@
 
         .content-section { padding: 60px 10%; }
 
-        /* Project Cards & Tagging */
+        /* Project Cards */
         .grid-layout {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -126,10 +150,13 @@
             text-decoration: none;
             color: inherit;
             background: var(--card-bg);
-            transition: 0.3s;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s;
         }
 
-        .project-card:hover { transform: translateY(-5px); border-color: var(--accent); }
+        .project-card:hover { 
+            transform: translateY(-10px); 
+            border-color: var(--accent); 
+        }
 
         .tag-container {
             display: flex;
@@ -147,7 +174,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* Experience Items */
         .exp-item {
             display: grid;
             grid-template-columns: 200px 1fr;
@@ -157,7 +183,6 @@
             padding-top: 20px;
         }
 
-        /* CV Styles */
         .cv-download-btn {
             display: inline-block;
             padding: 20px 50px;
@@ -168,16 +193,18 @@
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 2px;
-            transition: 0.3s;
+            transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .cv-download-btn:hover { background: var(--text); color: var(--bg); }
-
-        .fade-in { animation: fadeIn 0.5s ease-out forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .cv-download-btn:hover { 
+            background: var(--text); 
+            color: var(--bg); 
+            transform: scale(1.05);
+        }
 
         @media (max-width: 768px) {
             .exp-item { grid-template-columns: 1fr; gap: 10px; }
+            .page-header h1 { font-size: 3rem; }
             nav { padding: 20px 5%; }
             .content-section, .page-header { padding-left: 5%; padding-right: 5%; }
         }
@@ -201,17 +228,30 @@
         const projectFiles = ['project1.json', 'project2.json', 'project3.json', 'project4.json'];
         const expFiles = ['exp1.json', 'exp2.json', 'exp3.json'];
 
+        // Animation Engine
+        function initObserver() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        }
+
         const router = {
             async home() {
                 return `
-                    <div class="page-header fade-in">
+                    <div class="page-header reveal">
                         <h1>Daniel<br>Situmorang</h1>
                         <p style="margin-top:20px; max-width:600px; font-size:1.2rem;">
-                            Third-year Mathematics student at IPB University  specializing in quantitative analysis, data modeling, and end-to-end data pipeline development[cite: 4].
+                            Third-year Mathematics student at IPB University specializing in quantitative analysis, data modeling, and end-to-end data pipeline development[cite: 4, 35, 45].
                         </p>
                     </div>
-                    <div class="content-section fade-in">
-                        <p style="font-size:1.1rem;">Currently serving as <strong>Chairman of Gumatika</strong>. Based in Bekasi, West Java.</p>
+                    <div class="content-section reveal">
+                        <p style="font-size:1.1rem;">Currently serving as <strong>Chairman of Gumatika</strong>[cite: 6, 29]. Based in Bekasi, West Java[cite: 2].</p>
                         <div style="margin-top:40px; display:flex; gap:25px;">
                             <a href="https://linkedin.com/in/danieljas" target="_blank" style="color:var(--text); font-size:1.8rem;"><i class="fa-brands fa-linkedin"></i></a>
                             <a href="https://github.com/danmath-py/" target="_blank" style="color:var(--text); font-size:1.8rem;"><i class="fa-brands fa-github"></i></a>
@@ -221,17 +261,16 @@
             },
 
             async projects() {
-                let html = `<div class="page-header fade-in"><h1>Projects</h1></div><div class="content-section grid-layout fade-in">`;
+                let html = `<div class="page-header reveal"><h1>Projects</h1></div><div class="content-section grid-layout">`;
                 for (const file of projectFiles) {
                     try {
                         const res = await fetch(`projects/${file}`);
                         const data = await res.json();
-                        
                         const tagsHtml = data.tags ? data.tags.map(t => `<span class="tag">${t}</span>`).join('') : '';
                         const linkText = data.confidential ? "CONFIDENTIAL • LINKEDIN ↗" : "VIEW PROJECT ↗";
                         
                         html += `
-                            <a href="${data.url}" target="_blank" class="project-card">
+                            <a href="${data.url}" target="_blank" class="project-card reveal">
                                 <div>
                                     <div style="font-size:0.75rem; font-weight:700; text-transform:uppercase; margin-bottom:15px; color:#666;">${data.date}</div>
                                     <div style="font-family:'Inria Sans'; font-size:1.6rem; text-transform:uppercase; line-height:1.1;">${data.confidential ? '🔒 ' : ''}${data.title}</div>
@@ -248,13 +287,13 @@
             },
 
             async experience() {
-                let html = `<div class="page-header fade-in"><h1>Experience</h1></div><div class="content-section fade-in">`;
+                let html = `<div class="page-header reveal"><h1>Experience</h1></div><div class="content-section">`;
                 for (const file of expFiles) {
                     try {
                         const res = await fetch(`experience/${file}`);
                         const data = await res.json();
                         html += `
-                            <div class="exp-item">
+                            <div class="exp-item reveal">
                                 <div style="font-size:0.85rem; font-weight:700; color:#666; text-transform:uppercase;">${data.date}</div>
                                 <div>
                                     <div style="font-family:'Inria Sans'; font-size:1.5rem; text-transform:uppercase; font-weight:700;">${data.title}</div>
@@ -270,18 +309,18 @@
 
             async cv() {
                 return `
-                    <div class="page-header fade-in"><h1>CV & Contact</h1></div>
-                    <div class="content-section fade-in">
+                    <div class="page-header reveal"><h1>CV & Contact</h1></div>
+                    <div class="content-section reveal">
                         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 80px;">
                             <div>
                                 <h3 style="font-family:'Inria Sans'; text-transform:uppercase; margin-bottom:30px; font-size:1.8rem;">Direct Contact</h3>
-                                <p style="font-size:1.1rem;"><strong>Email:</strong> danielsitumo06@gmail.com </p>
-                                <p style="font-size:1.1rem;"><strong>Phone:</strong> +62 812 9834 6299 </p>
-                                <p style="font-size:1.1rem;"><strong>Location:</strong> Bekasi, West Java, Indonesia </p>
+                                <p style="font-size:1.1rem;"><strong>Email:</strong> danielsitumo06@gmail.com</p>
+                                <p style="font-size:1.1rem;"><strong>Phone:</strong> +62 812 9834 6299 [cite: 2]</p>
+                                <p style="font-size:1.1rem;"><strong>Location:</strong> Bekasi, West Java, Indonesia [cite: 2]</p>
                             </div>
                             <div style="text-align:center; border: 2px dashed var(--line); padding: 50px;">
                                 <h3 style="font-family:'Inria Sans'; text-transform:uppercase; margin-bottom:20px;">Full Résumé</h3>
-                                <p style="font-size:1rem; margin-bottom:30px; color:#666;">Technical skills in Python, Julia, LaTeX, and VBScript[cite: 9].</p>
+                                <p style="font-size:1rem; margin-bottom:30px; color:#666;">Expertise in Python, Julia, LaTeX, and VBScript[cite: 9].</p>
                                 <a href="assets/CV.pdf" target="_blank" class="cv-download-btn">Download PDF ↗</a>
                             </div>
                         </div>
@@ -295,6 +334,8 @@
             const container = document.getElementById('view-container');
             if (router[hash]) {
                 container.innerHTML = await router[hash]();
+                // Re-initialize animation observer for new content
+                setTimeout(initObserver, 100);
             } else {
                 window.location.hash = '#home';
             }
