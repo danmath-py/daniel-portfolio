@@ -48,7 +48,7 @@
         <div class="nav-links">
             <a href="#projects">Projects</a>
             <a href="#experience">Experience</a>
-            <a href="#cv">CV</a>
+            <a href="#cv">CV / Contact</a>
         </div>
     </nav>
 
@@ -58,15 +58,14 @@
         // File registries
         const projectFiles = ['project1.json', 'project2.json', 'project3.json', 'project4.json'];
         const expFiles = ['exp1.json', 'exp2.json', 'exp3.json'];
-
+        
         const router = {
             async home() {
                 return `
                     <div class="page-header fade-in">
                         <h1>Daniel<br>Situmorang</h1>
                         <p style="margin-top:20px; max-width:550px; font-size:1.1rem;">
-                            Third-year Mathematics student at IPB University specializing in quantitative analysis, 
-                            data modeling, and end-to-end data pipeline development[cite: 4].
+                            Third-year Mathematics student at IPB University specializing in quantitative analysis, data modeling, and end-to-end data pipeline development[cite: 4].
                         </p>
                     </div>
                     <div class="content-section fade-in">
@@ -78,14 +77,14 @@
                     </div>
                 `;
             },
-
+        
             async projects() {
                 let html = `<div class="page-header fade-in"><h1>Projects</h1></div><div class="content-section grid-layout fade-in">`;
                 for (const file of projectFiles) {
                     try {
                         const res = await fetch(`projects/${file}`);
                         const data = await res.json();
-                        const linkText = data.confidential ? "CONFIDENTIAL ↗" : "VIEW PROJECT ↗";
+                        const linkText = data.confidential ? "CONFIDENTIAL • LINKEDIN ↗" : "VIEW PROJECT ↗";
                         html += `
                             <div style="border: 2px solid var(--line); padding: 30px; display: flex; flex-direction: column; justify-content: space-between; height: 350px;">
                                 <div>
@@ -96,12 +95,12 @@
                                 <a href="${data.url}" target="_blank" style="font-size:0.75rem; font-weight:700; color:var(--accent); text-decoration:none;">${linkText}</a>
                             </div>
                         `;
-                    } catch(e) { console.error(e); }
+                    } catch(e) { console.error("Error loading project:", e); }
                 }
                 html += `</div>`;
                 return html;
             },
-
+        
             async experience() {
                 let html = `<div class="page-header fade-in"><h1>Experience</h1></div><div class="content-section fade-in">`;
                 for (const file of expFiles) {
@@ -109,7 +108,7 @@
                         const res = await fetch(`experience/${file}`);
                         const data = await res.json();
                         html += `
-                            <div class="exp-item">
+                            <div class="exp-item" style="display: grid; grid-template-columns: 200px 1fr; gap: 40px; margin-bottom: 40px; border-top: 1px solid #eee; padding-top: 20px;">
                                 <div style="font-size:0.8rem; font-weight:700; color:#666; text-transform:uppercase;">${data.date}</div>
                                 <div>
                                     <div style="font-family:'Inria Sans'; font-size:1.4rem; text-transform:uppercase; font-weight:700;">${data.title}</div>
@@ -117,39 +116,39 @@
                                 </div>
                             </div>
                         `;
-                    } catch(e) { console.error(e); }
+                    } catch(e) { console.error("Error loading experience:", e); }
                 }
                 html += `</div>`;
                 return html;
             },
-
+        
             async cv() {
                 return `
-                    <div class="page-header fade-in"><h1>Curriculum<br>Vitae</h1></div>
-                    <div class="content-section fade-in" style="text-align:center; padding: 120px 10%;">
-                        <p style="font-size:1.2rem; margin-bottom:40px;">Download my full professional summary and technical expertise.</p>
-                        <a href="assets/CV (2).pdf" target="_blank" style="display:inline-block; padding:20px 60px; border:3px solid var(--line); color:var(--text); text-decoration:none; font-weight:700; text-transform:uppercase; letter-spacing:2px; transition:0.3s;" onmouseover="this.style.background='black';this.style.color='white'" onmouseout="this.style.background='none';this.style.color='black'">
-                            Download PDF ↗
-                        </a>
+                    <div class="page-header fade-in"><h1>CV & Contact</h1></div>
+                    <div class="content-section fade-in">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px;">
+                            <div>
+                                <h3 style="font-family:'Inria Sans'; text-transform:uppercase;">Contact Info</h3>
+                                <p><strong>Email:</strong> dansitumorang@apps.ipb.ac.id [cite: 2]</p>
+                                <p><strong>Phone:</strong> +62 812 9834 6299 [cite: 2]</p>
+                                <p><strong>Location:</strong> Bekasi, West Java, Indonesia [cite: 2]</p>
+                                <div style="margin-top:20px;">
+                                    <a href="https://linkedin.com/in/danieljas" target="_blank" style="margin-right:15px; font-size:1.2rem; color:var(--text);"><i class="fa-brands fa-linkedin"></i></a>
+                                    <a href="https://github.com/danmath-py/" target="_blank" style="font-size:1.2rem; color:var(--text);"><i class="fa-brands fa-github"></i></a>
+                                </div>
+                            </div>
+                            <div style="text-align:center; border: 1px dashed var(--line); padding: 40px;">
+                                <h3 style="font-family:'Inria Sans'; text-transform:uppercase;">Full Resume</h3>
+                                <p style="font-size:0.9rem; margin-bottom:25px;">Download the full PDF version of my technical background and organizational journey[cite: 6].</p>
+                                <a href="assets/CV (2).pdf" target="_blank" class="cv-download-btn" style="padding:15px 30px; border:2px solid var(--line); text-decoration:none; color:var(--text); font-weight:700; display:inline-block; transition:0.3s;" onmouseover="this.style.background='black';this.style.color='white'" onmouseout="this.style.background='none';this.style.color='black'">
+                                    DOWNLOAD PDF ↗
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 `;
             }
         };
-
-        async function handleRoute() {
-            const hash = window.location.hash.replace('#', '') || 'home';
-            const container = document.getElementById('view-container');
-            
-            if (router[hash]) {
-                container.innerHTML = await router[hash]();
-            } else {
-                window.location.hash = '#home';
-            }
-            window.scrollTo(0, 0);
-        }
-
-        window.addEventListener('hashchange', handleRoute);
-        window.addEventListener('load', handleRoute);
     </script>
 </body>
 </html>
