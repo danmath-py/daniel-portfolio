@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daniel Situmorang | Portfolio System</title>
@@ -92,12 +93,40 @@
             .project-card { flex: 0 0 85%; }
             .exp-grid { grid-template-columns: 1fr; gap: 10px; }
         }
+        /* Add this to your <style> section */
+        .social-icon {
+            font-size: 1.5rem; /* Large enough to be accessible but clean */
+            color: var(--text);
+            text-decoration: none;
+            margin-right: 25px;
+            transition: all 0.2s ease;
+            display: inline-block;
+        }
+
+        .social-icon:hover {
+            color: var(--accent);
+            transform: translateY(-3px); /* Subtle Swiss-style "pop" */
+        }
     </style>
 </head>
 <body>
 
     <div class="hero">
         <h1>Daniel <br>Situmorang</h1>
+        <div class="contact-bar" style="margin-top:20px;">
+            <a href="https://linkedin.com/in/danieljas" target="_blank" class="social-icon">
+                <i class="fa-brands fa-linkedin-in"></i>
+            </a>
+            <a href="https://github.com/danmath-py/" target="_blank" class="social-icon">
+                <i class="fa-brands fa-github"></i>
+            </a>
+            <a href="https://instagram.com/YOUR_HANDLE" target="_blank" class="social-icon">
+                <i class="fa-brands fa-instagram"></i>
+            </a>
+            <a href="mailto:dansitumorang@apps.ipb.ac.id" class="social-icon">
+                <i class="fa-regular fa-envelope"></i>
+            </a>
+        </div>
         <div class="contact-bar" style="margin-top:20px;">
             <a href="mailto:dansitumorang@apps.ipb.ac.id" style="color:var(--text); text-decoration:none; margin-right:20px;">EMAIL</a>
             <a href="https://github.com/danmath-py/" style="color:var(--text); text-decoration:none;">GITHUB</a>
