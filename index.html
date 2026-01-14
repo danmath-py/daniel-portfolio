@@ -77,7 +77,6 @@
             position: relative;
         }
 
-        /* Nav Underline Animation */
         nav .nav-links a::after {
             content: '';
             position: absolute;
@@ -128,19 +127,41 @@
             line-height: 0.85;
         }
 
+        /* Hero & Stochastic Lab Layout */
         .hero-grid {
             display: grid;
-            grid-template-columns: 1.2fr 0.8fr;
+            grid-template-columns: 1fr 1.2fr;
             gap: 60px;
-            align-items: center;
+            align-items: start;
         }
 
-        #mandelbrotCanvas {
+        .lab-controls {
+            margin-top: 30px;
+            display: grid;
+            gap: 15px;
+            padding: 25px;
+            border: 1px solid var(--line);
+            background: var(--card-bg);
+        }
+
+        .lab-controls label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        input[type="range"] {
             width: 100%;
-            aspect-ratio: 1/1;
+            accent-color: var(--accent);
+            cursor: pointer;
+        }
+
+        #stochasticCanvas {
+            width: 100%;
+            height: 380px;
             border: 2px solid var(--line);
-            cursor: crosshair;
-            background: #000;
+            background: var(--bg);
         }
 
         .content-section { padding: 60px 10%; }
@@ -244,42 +265,50 @@
             document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
         }
 
-        // Mandelbrot Set Logic
-        function initMandelbrot() {
-            const canvas = document.getElementById('mandelbrotCanvas');
+        // Stochastic Lab Logic (Geometric Brownian Motion)
+        let drift = 0.05, vol = 0.2;
+        function initStochasticLab() {
+            const dIn = document.getElementById('drift'), vIn = document.getElementById('vol');
+            if (!dIn) return;
+            dIn.oninput = (e) => { 
+                drift = parseFloat(e.target.value); 
+                document.getElementById('driftVal').innerText = drift; 
+                runSimulation(); 
+            };
+            vIn.oninput = (e) => { 
+                vol = parseFloat(e.target.value); 
+                document.getElementById('volVal').innerText = vol; 
+                runSimulation(); 
+            };
+            runSimulation();
+        }
+
+        function runSimulation() {
+            const canvas = document.getElementById('stochasticCanvas');
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
-            let w = canvas.width, h = canvas.height;
-            let zoom = 1, moveX = -0.5, moveY = 0, maxIter = 100;
-
-            function draw() {
-                const imgData = ctx.createImageData(w, h);
-                for (let x = 0; x < w; x++) {
-                    for (let y = 0; y < h; y++) {
-                        let a = (x - w/2) / (0.5 * zoom * w) + moveX;
-                        let b = (y - h/2) / (0.5 * zoom * h) + moveY;
-                        let ca = a, cb = b, n = 0;
-                        while (n < maxIter) {
-                            let aa = a * a - b * b, bb = 2 * a * b;
-                            a = aa + ca; b = bb + cb;
-                            if (a * a + b * b > 4) break;
-                            n++;
-                        }
-                        let pix = (x + y * w) * 4;
-                        let bright = n === maxIter ? 0 : (n / maxIter) * 255;
-                        imgData.data[pix] = imgData.data[pix+1] = imgData.data[pix+2] = bright;
-                        imgData.data[pix+3] = 255;
-                    }
+            canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight;
+            ctx.clearRect(0,0, canvas.width, canvas.height);
+            
+            // Generate multiple paths
+            for(let i=0; i<10; i++) {
+                let S = canvas.height/2, steps = 100, dt = 1/steps;
+                ctx.beginPath();
+                ctx.strokeStyle = i === 0 ? 'var(--accent)' : 'rgba(150,150,150,0.3)';
+                ctx.lineWidth = i === 0 ? 3 : 1;
+                ctx.moveTo(0, S);
+                
+                for(let t=1; t<=steps; t++) {
+                    // Box-Muller transform for Gaussian noise
+                    let u1 = Math.random(), u2 = Math.random();
+                    let z = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
+                    
+                    // GBM Formula: dS = S * (mu*dt + sigma*sqrt(dt)*z)
+                    S -= S * (drift * dt + vol * Math.sqrt(dt) * z); 
+                    ctx.lineTo((t/steps)*canvas.width, S);
                 }
-                ctx.putImageData(imgData, 0, 0);
+                ctx.stroke();
             }
-            canvas.onclick = (e) => {
-                const r = canvas.getBoundingClientRect();
-                moveX += (e.clientX - r.left - w/2) / (0.5 * zoom * w);
-                moveY += (e.clientY - r.top - h/2) / (0.5 * zoom * h);
-                zoom *= 2; maxIter += 20; draw();
-            };
-            draw();
         }
 
         const router = {
@@ -289,14 +318,19 @@
                         <div class="hero-grid">
                             <div>
                                 <h1>Daniel<br>Situmorang</h1>
-                                <p style="margin-top:20px; font-size:1.2rem;">
-                                    Third-year Mathematics student at **IPB University** specializing in quantitative analysis and mathematical modeling.
+                                <p style="margin-top:20px; font-size:1.1rem;">
+                                    Chairman of **Gumatika**. 
+                                    Math student at **IPB University** focusing on computational modeling and quantitative finance.
                                 </p>
-                                <p style="font-size:0.9rem; color:var(--accent); margin-top:20px; font-weight:700;">
-                                    COMPUTATIONAL LAB: Click the fractal to explore.
-                                </p>
+                                <div class="lab-controls">
+                                    <label>Drift (μ): <span id="driftVal">0.05</span></label>
+                                    <input type="range" id="drift" min="-0.5" max="0.5" step="0.01" value="0.05">
+                                    <label>Volatility (σ): <span id="volVal">0.2</span></label>
+                                    <input type="range" id="vol" min="0.01" max="1" step="0.01" value="0.2">
+                                    <p style="font-size:0.6rem; margin-top:10px; opacity:0.7; font-weight:700;">MODEL: GEOMETRIC BROWNIAN MOTION</p>
+                                </div>
                             </div>
-                            <canvas id="mandelbrotCanvas" width="400" height="400" class="reveal"></canvas>
+                            <canvas id="stochasticCanvas" class="reveal"></canvas>
                         </div>
                     </div>
                     <div class="content-section reveal">
@@ -328,7 +362,7 @@
                                 <div style="font-size:0.8rem; font-weight:700; color:var(--accent); text-transform:uppercase; margin-top:20px;">${linkText}</div>
                             </a>
                         `;
-                    } catch(e) {}
+                    } catch(e) { console.error(e); }
                 }
                 return html + `</div>`;
             },
@@ -348,7 +382,7 @@
                                 </div>
                             </div>
                         `;
-                    } catch(e) {}
+                    } catch(e) { console.error(e); }
                 }
                 return html + `</div>`;
             },
@@ -384,7 +418,7 @@
             const container = document.getElementById('view-container');
             if (router[hash]) {
                 container.innerHTML = await router[hash]();
-                if (hash === 'home') setTimeout(initMandelbrot, 200);
+                if (hash === 'home') setTimeout(initStochasticLab, 200);
                 setTimeout(initObserver, 100);
             } else { window.location.hash = '#home'; }
             window.scrollTo(0, 0);
