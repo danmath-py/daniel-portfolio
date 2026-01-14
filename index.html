@@ -116,25 +116,30 @@
 
     <script>
         // Updated Engine for Carousel and Experience
-        async function loadPortfolio() {
-            // Load Projects into Carousel
-            const projectFiles = ['project1.json', 'project2.json']; // Add your filenames
-            const pContainer = document.getElementById('projects-container');
+async function loadPortfolio() {
+    const projectFiles = ['project1.json', 'project2.json', 'project3.json', 'project4.json'];
+    const pContainer = document.getElementById('projects-container');
 
-            for (const file of projectFiles) {
-                const res = await fetch(`projects/${file}`);
-                const data = await res.json();
-                pContainer.innerHTML += `
-                    <a href="${data.url}" class="project-card" target="_blank">
-                        <div>
-                            <div class="date">${data.date}</div>
-                            <div class="title">${data.title}</div>
-                            <p class="desc">${data.description}</p>
-                        </div>
-                        <div style="font-size: 0.7rem; font-weight:700;">VIEW PROJECT ↗</div>
-                    </a>
-                `;
-            }
+    for (const file of projectFiles) {
+        const res = await fetch(`projects/${file}`);
+        const data = await res.json();
+        
+        // Logic for confidential projects
+        const linkText = data.confidential ? "CONFIDENTIAL • VIEW ON LINKEDIN ↗" : "VIEW PROJECT ↗";
+        const lockIcon = data.confidential ? "🔒 " : "";
+
+        pContainer.innerHTML += `
+            <a href="${data.url}" class="project-card" target="_blank">
+                <div>
+                    <div class="date">${data.date}</div>
+                    <div class="title">${lockIcon}${data.title}</div>
+                    <p class="desc">${data.description}</p>
+                </div>
+                <div style="font-size: 0.7rem; font-weight:700; letter-spacing: 1px; color: var(--accent);">
+                    ${linkText}
+                </div>
+            </a>
+        `;
 
             // Load Experience into Vertical Grid
             const expFiles = ['exp1.json', 'exp2.json']; // Add your filenames
