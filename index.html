@@ -17,6 +17,7 @@
             --card-bg: #ffffff;
         }
 
+        /* Dark Mode Theme Variables */
         body.dark-mode {
             --bg: #1a1a1a;
             --text: #f0f0f0;
@@ -111,11 +112,7 @@
             transform: translateY(0);
         }
 
-        /* Staggered Delay for Grids */
-        .grid-layout > div:nth-child(1) { transition-delay: 0.1s; }
-        .grid-layout > div:nth-child(2) { transition-delay: 0.2s; }
-        .grid-layout > div:nth-child(3) { transition-delay: 0.3s; }
-
+        /* Layout Elements */
         #view-container { margin-top: 80px; min-height: calc(100vh - 80px); }
 
         .page-header {
@@ -129,6 +126,21 @@
             text-transform: uppercase;
             margin: 0;
             line-height: 0.85;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        #mandelbrotCanvas {
+            width: 100%;
+            aspect-ratio: 1/1;
+            border: 2px solid var(--line);
+            cursor: crosshair;
+            background: #000;
         }
 
         .content-section { padding: 60px 10%; }
@@ -146,17 +158,14 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            height: 400px;
+            height: 420px;
             text-decoration: none;
             color: inherit;
             background: var(--card-bg);
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s;
         }
 
-        .project-card:hover { 
-            transform: translateY(-10px); 
-            border-color: var(--accent); 
-        }
+        .project-card:hover { transform: translateY(-10px); border-color: var(--accent); }
 
         .tag-container {
             display: flex;
@@ -196,13 +205,10 @@
             transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .cv-download-btn:hover { 
-            background: var(--text); 
-            color: var(--bg); 
-            transform: scale(1.05);
-        }
+        .cv-download-btn:hover { background: var(--text); color: var(--bg); transform: scale(1.05); }
 
-        @media (max-width: 768px) {
+        @media (max-width: 900px) {
+            .hero-grid { grid-template-columns: 1fr; gap: 40px; }
             .exp-item { grid-template-columns: 1fr; gap: 10px; }
             .page-header h1 { font-size: 3rem; }
             nav { padding: 20px 5%; }
@@ -232,26 +238,69 @@
         function initObserver() {
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('active');
-                    }
+                    if (entry.isIntersecting) entry.target.classList.add('active');
                 });
             }, { threshold: 0.1 });
-
             document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        }
+
+        // Mandelbrot Set Logic
+        function initMandelbrot() {
+            const canvas = document.getElementById('mandelbrotCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let w = canvas.width, h = canvas.height;
+            let zoom = 1, moveX = -0.5, moveY = 0, maxIter = 100;
+
+            function draw() {
+                const imgData = ctx.createImageData(w, h);
+                for (let x = 0; x < w; x++) {
+                    for (let y = 0; y < h; y++) {
+                        let a = (x - w/2) / (0.5 * zoom * w) + moveX;
+                        let b = (y - h/2) / (0.5 * zoom * h) + moveY;
+                        let ca = a, cb = b, n = 0;
+                        while (n < maxIter) {
+                            let aa = a * a - b * b, bb = 2 * a * b;
+                            a = aa + ca; b = bb + cb;
+                            if (a * a + b * b > 4) break;
+                            n++;
+                        }
+                        let pix = (x + y * w) * 4;
+                        let bright = n === maxIter ? 0 : (n / maxIter) * 255;
+                        imgData.data[pix] = imgData.data[pix+1] = imgData.data[pix+2] = bright;
+                        imgData.data[pix+3] = 255;
+                    }
+                }
+                ctx.putImageData(imgData, 0, 0);
+            }
+            canvas.onclick = (e) => {
+                const r = canvas.getBoundingClientRect();
+                moveX += (e.clientX - r.left - w/2) / (0.5 * zoom * w);
+                moveY += (e.clientY - r.top - h/2) / (0.5 * zoom * h);
+                zoom *= 2; maxIter += 20; draw();
+            };
+            draw();
         }
 
         const router = {
             async home() {
                 return `
                     <div class="page-header reveal">
-                        <h1>Daniel<br>Situmorang</h1>
-                        <p style="margin-top:20px; max-width:600px; font-size:1.2rem;">
-                            Third-year Mathematics student at IPB University specializing in quantitative analysis, data modeling, and end-to-end data pipeline development[cite: 4, 35, 45].
-                        </p>
+                        <div class="hero-grid">
+                            <div>
+                                <h1>Daniel<br>Situmorang</h1>
+                                <p style="margin-top:20px; font-size:1.2rem;">
+                                    Third-year Mathematics student at **IPB University** specializing in quantitative analysis and mathematical modeling.
+                                </p>
+                                <p style="font-size:0.9rem; color:var(--accent); margin-top:20px; font-weight:700;">
+                                    COMPUTATIONAL LAB: Click the fractal to explore.
+                                </p>
+                            </div>
+                            <canvas id="mandelbrotCanvas" width="400" height="400" class="reveal"></canvas>
+                        </div>
                     </div>
                     <div class="content-section reveal">
-                        <p style="font-size:1.1rem;">Currently serving as <strong>Chairman of Gumatika</strong>[cite: 6, 29]. Based in Bekasi, West Java[cite: 2].</p>
+                        <p style="font-size:1.1rem;">Currently serving as **Chairman of Gumatika**. Based in **Bekasi, West Java**.</p>
                         <div style="margin-top:40px; display:flex; gap:25px;">
                             <a href="https://linkedin.com/in/danieljas" target="_blank" style="color:var(--text); font-size:1.8rem;"><i class="fa-brands fa-linkedin"></i></a>
                             <a href="https://github.com/danmath-py/" target="_blank" style="color:var(--text); font-size:1.8rem;"><i class="fa-brands fa-github"></i></a>
@@ -268,7 +317,6 @@
                         const data = await res.json();
                         const tagsHtml = data.tags ? data.tags.map(t => `<span class="tag">${t}</span>`).join('') : '';
                         const linkText = data.confidential ? "CONFIDENTIAL • LINKEDIN ↗" : "VIEW PROJECT ↗";
-                        
                         html += `
                             <a href="${data.url}" target="_blank" class="project-card reveal">
                                 <div>
@@ -280,10 +328,9 @@
                                 <div style="font-size:0.8rem; font-weight:700; color:var(--accent); text-transform:uppercase; margin-top:20px;">${linkText}</div>
                             </a>
                         `;
-                    } catch(e) { console.error(e); }
+                    } catch(e) {}
                 }
-                html += `</div>`;
-                return html;
+                return html + `</div>`;
             },
 
             async experience() {
@@ -301,10 +348,9 @@
                                 </div>
                             </div>
                         `;
-                    } catch(e) { console.error(e); }
+                    } catch(e) {}
                 }
-                html += `</div>`;
-                return html;
+                return html + `</div>`;
             },
 
             async cv() {
@@ -315,12 +361,16 @@
                             <div>
                                 <h3 style="font-family:'Inria Sans'; text-transform:uppercase; margin-bottom:30px; font-size:1.8rem;">Direct Contact</h3>
                                 <p style="font-size:1.1rem;"><strong>Email:</strong> danielsitumo06@gmail.com</p>
-                                <p style="font-size:1.1rem;"><strong>Phone:</strong> +62 812 9834 6299 [cite: 2]</p>
-                                <p style="font-size:1.1rem;"><strong>Location:</strong> Bekasi, West Java, Indonesia [cite: 2]</p>
+                                <p style="font-size:1.1rem;"><strong>Phone:</strong> +62 812 9834 6299</p>
+                                <p style="font-size:1.1rem;"><strong>Location:</strong> Bekasi, West Java, Indonesia</p>
+                                <div style="margin-top:30px; display:flex; gap:20px;">
+                                    <a href="https://linkedin.com/in/danieljas" target="_blank" style="color:var(--text); font-size:1.5rem;"><i class="fa-brands fa-linkedin"></i></a>
+                                    <a href="https://github.com/danmath-py/" target="_blank" style="color:var(--text); font-size:1.5rem;"><i class="fa-brands fa-github"></i></a>
+                                </div>
                             </div>
                             <div style="text-align:center; border: 2px dashed var(--line); padding: 50px;">
                                 <h3 style="font-family:'Inria Sans'; text-transform:uppercase; margin-bottom:20px;">Full Résumé</h3>
-                                <p style="font-size:1rem; margin-bottom:30px; color:#666;">Expertise in Python, Julia, LaTeX, and VBScript[cite: 9].</p>
+                                <p style="font-size:1rem; margin-bottom:30px; color:#666;">Technical skills: Python, Julia, LaTeX, VBScript.</p>
                                 <a href="assets/CV.pdf" target="_blank" class="cv-download-btn">Download PDF ↗</a>
                             </div>
                         </div>
@@ -334,19 +384,15 @@
             const container = document.getElementById('view-container');
             if (router[hash]) {
                 container.innerHTML = await router[hash]();
-                // Re-initialize animation observer for new content
+                if (hash === 'home') setTimeout(initMandelbrot, 200);
                 setTimeout(initObserver, 100);
-            } else {
-                window.location.hash = '#home';
-            }
+            } else { window.location.hash = '#home'; }
             window.scrollTo(0, 0);
         }
 
         function toggleTheme() {
-            const body = document.body;
-            const btn = document.getElementById('theme-btn');
-            body.classList.toggle('dark-mode');
-            btn.innerText = body.classList.contains('dark-mode') ? 'Light' : 'Dark';
+            document.body.classList.toggle('dark-mode');
+            document.getElementById('theme-btn').innerText = document.body.classList.contains('dark-mode') ? 'Light' : 'Dark';
         }
 
         window.addEventListener('hashchange', handleRoute);
