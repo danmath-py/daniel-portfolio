@@ -2,28 +2,106 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daniel Situmorang | Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inria+Sans:wght@700&family=Karla:wght@400;700&display=swap" rel="stylesheet">
+    
     <style>
-        /* Minimalist CSS */
-        body { font-family: sans-serif; line-height: 1.6; max-width: 800px; margin: 40px auto; padding: 0 20px; color: #333; }
-        h1 { border-bottom: 2px solid #000; padding-bottom: 10px; }
-        .project { margin-bottom: 20px; }
+        :root {
+            --bg: #ffffff;
+            --text: #1a1a1a;
+            --accent: #0055ff; /* A clean blue for links */
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Karla', sans-serif;
+            margin: 0;
+            padding: 80px 10% 80px 10%;
+            line-height: 1.5;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Inria Sans', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            margin: 0;
+        }
+
+        h1 { font-size: 3.5rem; line-height: 1; margin-bottom: 2rem; }
+        h2 { font-size: 1.2rem; border-top: 2px solid var(--text); padding-top: 0.5rem; margin-top: 4rem; margin-bottom: 2rem; }
+
+        /* The Grid System */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr; /* Asymmetric Swiss layout */
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .project-title { font-weight: 700; margin-bottom: 0.5rem; }
+        .tag { font-size: 0.8rem; color: #666; text-transform: uppercase; }
+
+        a { color: var(--accent); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        @media (max-width: 768px) {
+            .grid { grid-template-columns: 1fr; }
+            h1 { font-size: 2.5rem; }
+        }
     </style>
 </head>
 <body>
-    <h1>Daniel Juniro Aslacris Situmorang</h1>
-    <p>Third-year Mathematics student at IPB University specializing in quantitative analysis[cite: 4].</p>
-    
-    <h2>Technical Skills</h2>
-    <ul>
-        <li>Programming: Python, Julia, LaTeX, VBScript [cite: 9]</li>
-        <li>Analysis: Stochastic Processes, Financial Modeling [cite: 10]</li>
-    </ul>
 
-    <h2>Selected Projects</h2>
-    <div class="project">
-        <h3>Mathematics Characteristics Database</h3>
-        <p>Developed an end-to-end data pipeline using Streamlit[cite: 14].</p>
-    </div>
+    <header>
+        <h1>Daniel Juniro <br>Aslacris Situmorang</h1>
+        <p style="font-size: 1.2rem; max-width: 600px;">
+            Third-year Mathematics student at IPB University specializing in quantitative analysis and data modeling[cite: 4]. Currently Chairman of Gumatika[cite: 29].
+        </p>
+    </header>
+
+    <main>
+        <h2>Technical Core</h2>
+        <div class="grid">
+            <div>Programming [cite: 9]</div>
+            <div>Python (NumPy, Pandas, Streamlit), Julia, LaTeX, VBScript</div>
+            
+            <div>Data Analysis [cite: 10]</div>
+            <div>Stochastic Processes, Financial Modeling, EDA, Categorical Encoding</div>
+        </div>
+
+        <h2>Selected Projects</h2>
+        
+        <div class="grid">
+            <div class="tag">Oct — Nov 2025 [cite: 14]</div>
+            <div>
+                <div class="project-title">Mathematics Characteristics Database [cite: 14]</div>
+                <p>Developed an end-to-end data pipeline and custom web-based application using Streamlit to replace traditional forms[cite: 14].</p>
+            </div>
+        </div>
+
+        <div class="grid">
+            <div class="tag">Apr — Dec 2025 [cite: 17]</div>
+            <div>
+                <div class="project-title">Work Programme Database [cite: 17]</div>
+                <p>Engineered a data-driven internal evaluation system to assess performance quality across organizational departments[cite: 17].</p>
+            </div>
+        </div>
+
+        <h2>Leadership</h2>
+        <div class="grid">
+            <div class="tag">Dec 2025 — Present [cite: 30, 31]</div>
+            <div>
+                <div class="project-title">Chairman of the Executive Board | Gumatika IPB [cite: 28, 29]</div>
+                <p>Leading an organization of 7 departments and 1 bureau, managing high-level strategy and administrative execution[cite: 32].</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2026 | <a href="https://github.com/danmath-py/">GitHub</a> | <a href="https://linkedin.com/in/danieljas">LinkedIn</a> [cite: 2]</p>
+    </footer>
+
 </body>
 </html>
