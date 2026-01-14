@@ -11,7 +11,7 @@
         :root { --bg: #ffffff; --text: #1a1a1a; --accent: #0055ff; --line: #000000; }
         body { background-color: var(--bg); color: var(--text); font-family: 'Karla', sans-serif; margin: 0; overflow-x: hidden; }
 
-        /* Persistent Navigation */
+        /* Navigation */
         nav {
             position: fixed; top: 0; width: 100%; background: rgba(255,255,255,0.9);
             backdrop-filter: blur(10px); padding: 20px 10%; border-bottom: 1px solid #eee;
@@ -21,22 +21,24 @@
         nav .nav-links { display: flex; gap: 30px; }
         nav .nav-links a { text-decoration: none; color: var(--text); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; }
 
-        /* Dynamic Content Container */
+        /* Container */
         #view-container { margin-top: 80px; min-height: calc(100vh - 80px); }
 
-        /* Reusable Swiss Styles */
-        .page-header { padding: 100px 10% 40px 10%; border-bottom: 2px solid var(--line); }
-        .page-header h1 { font-family: 'Inria Sans'; font-size: 4rem; text-transform: uppercase; margin: 0; line-height: 0.9; }
+        /* Swiss Layout Elements */
+        .page-header { padding: 80px 10% 40px 10%; border-bottom: 2px solid var(--line); }
+        .page-header h1 { font-family: 'Inria Sans'; font-size: clamp(2.5rem, 6vw, 4rem); text-transform: uppercase; margin: 0; line-height: 0.9; }
         
         .content-section { padding: 60px 10%; }
-        .grid-layout { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
+        .grid-layout { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; }
 
-        /* Fade-in Animation for page transitions */
-        .fade-in { animation: fadeIn 0.4s ease-in; }
+        /* Experience Specifics */
+        .exp-item { display: grid; grid-template-columns: 200px 1fr; gap: 40px; margin-bottom: 40px; border-top: 1px solid #eee; padding-top: 20px; }
+
+        /* Animation */
+        .fade-in { animation: fadeIn 0.4s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Mobile Adjustments */
-        @media (max-width: 768px) { nav { padding: 20px 5%; } .page-header h1 { font-size: 2.5rem; } }
+        @media (max-width: 768px) { .exp-item { grid-template-columns: 1fr; gap: 10px; } .page-header h1 { font-size: 2.5rem; } }
     </style>
 </head>
 <body>
@@ -50,11 +52,10 @@
         </div>
     </nav>
 
-    <div id="view-container">
-        </div>
+    <div id="view-container"></div>
 
     <script>
-        // Data sources
+        // File registries
         const projectFiles = ['project1.json', 'project2.json', 'project3.json', 'project4.json'];
         const expFiles = ['exp1.json', 'exp2.json', 'exp3.json'];
 
@@ -63,11 +64,17 @@
                 return `
                     <div class="page-header fade-in">
                         <h1>Daniel<br>Situmorang</h1>
-                        <p style="margin-top:20px; max-width:500px;">Third-year Math undergrad at IPB University specializing in quantitative analysis[cite: 4, 45, 47]. Currently Chairman of Gumatika[cite: 6, 29].</p>
+                        <p style="margin-top:20px; max-width:550px; font-size:1.1rem;">
+                            Third-year Mathematics student at IPB University specializing in quantitative analysis, 
+                            data modeling, and end-to-end data pipeline development[cite: 4].
+                        </p>
                     </div>
                     <div class="content-section fade-in">
-                        <p>Based in Bekasi, West Java. Passionate about Computational Mathematics and Financial Modeling.</p>
-                        <a href="#projects" style="color:var(--accent); font-weight:700; text-decoration:none;">VIEW FULL PORTFOLIO ↗</a>
+                        <p>Currently serving as <strong>Chairman of Gumatika</strong>[cite: 6, 29]. Based in Bekasi, West Java[cite: 2].</p>
+                        <div style="margin-top:30px; display:flex; gap:20px;">
+                            <a href="https://linkedin.com/in/danieljas" target="_blank" style="color:var(--text); font-size:1.5rem;"><i class="fa-brands fa-linkedin"></i></a>
+                            <a href="https://github.com/danmath-py/" target="_blank" style="color:var(--text); font-size:1.5rem;"><i class="fa-brands fa-github"></i></a>
+                        </div>
                     </div>
                 `;
             },
@@ -75,19 +82,21 @@
             async projects() {
                 let html = `<div class="page-header fade-in"><h1>Projects</h1></div><div class="content-section grid-layout fade-in">`;
                 for (const file of projectFiles) {
-                    const res = await fetch(`projects/${file}`);
-                    const data = await res.json();
-                    const linkText = data.confidential ? "CONFIDENTIAL ↗" : "LIVE DEMO ↗";
-                    html += `
-                        <div style="border: 2px solid var(--line); padding: 20px; display: flex; flex-direction: column; justify-content: space-between; height: 300px;">
-                            <div>
-                                <div style="font-size:0.7rem; font-weight:700; margin-bottom:10px;">${data.date}</div>
-                                <div style="font-family:'Inria Sans'; font-size:1.4rem; text-transform:uppercase;">${data.confidential ? '🔒 ' : ''}${data.title}</div>
-                                <p style="font-size:0.85rem;">${data.description}</p>
+                    try {
+                        const res = await fetch(`projects/${file}`);
+                        const data = await res.json();
+                        const linkText = data.confidential ? "CONFIDENTIAL ↗" : "VIEW PROJECT ↗";
+                        html += `
+                            <div style="border: 2px solid var(--line); padding: 30px; display: flex; flex-direction: column; justify-content: space-between; height: 350px;">
+                                <div>
+                                    <div style="font-size:0.7rem; font-weight:700; text-transform:uppercase; margin-bottom:15px; color:#666;">${data.date}</div>
+                                    <div style="font-family:'Inria Sans'; font-size:1.5rem; text-transform:uppercase; line-height:1.1;">${data.confidential ? '🔒 ' : ''}${data.title}</div>
+                                    <p style="font-size:0.9rem; margin-top:15px;">${data.description}</p>
+                                </div>
+                                <a href="${data.url}" target="_blank" style="font-size:0.75rem; font-weight:700; color:var(--accent); text-decoration:none;">${linkText}</a>
                             </div>
-                            <a href="${data.url}" target="_blank" style="font-size:0.7rem; font-weight:700; color:var(--accent); text-decoration:none;">${linkText}</a>
-                        </div>
-                    `;
+                        `;
+                    } catch(e) { console.error(e); }
                 }
                 html += `</div>`;
                 return html;
@@ -96,17 +105,19 @@
             async experience() {
                 let html = `<div class="page-header fade-in"><h1>Experience</h1></div><div class="content-section fade-in">`;
                 for (const file of expFiles) {
-                    const res = await fetch(`experience/${file}`);
-                    const data = await res.json();
-                    html += `
-                        <div style="display: grid; grid-template-columns: 200px 1fr; gap: 40px; margin-bottom: 40px; border-top: 1px solid #eee; padding-top: 20px;">
-                            <div style="font-size:0.8rem; font-weight:700; color:#666;">${data.date}</div>
-                            <div>
-                                <div style="font-family:'Inria Sans'; font-size:1.2rem; text-transform:uppercase; font-weight:700;">${data.title}</div>
-                                <p style="font-size:0.9rem;">${data.description}</p>
+                    try {
+                        const res = await fetch(`experience/${file}`);
+                        const data = await res.json();
+                        html += `
+                            <div class="exp-item">
+                                <div style="font-size:0.8rem; font-weight:700; color:#666; text-transform:uppercase;">${data.date}</div>
+                                <div>
+                                    <div style="font-family:'Inria Sans'; font-size:1.4rem; text-transform:uppercase; font-weight:700;">${data.title}</div>
+                                    <p style="font-size:1rem; margin-top:10px;">${data.description}</p>
+                                </div>
                             </div>
-                        </div>
-                    `;
+                        `;
+                    } catch(e) { console.error(e); }
                 }
                 html += `</div>`;
                 return html;
@@ -115,10 +126,11 @@
             async cv() {
                 return `
                     <div class="page-header fade-in"><h1>Curriculum<br>Vitae</h1></div>
-                    <div class="content-section fade-in" style="text-align:center;">
-                        <p>Available for data analyst or freelance quantitative roles.</p>
-                        <br>
-                        <a href="assets/CV (2).pdf" target="_blank" style="display:inline-block; padding:20px 50px; border:3px solid var(--line); color:var(--text); text-decoration:none; font-weight:700; text-transform:uppercase;">Download PDF ↗</a>
+                    <div class="content-section fade-in" style="text-align:center; padding: 120px 10%;">
+                        <p style="font-size:1.2rem; margin-bottom:40px;">Download my full professional summary and technical expertise.</p>
+                        <a href="assets/CV (2).pdf" target="_blank" style="display:inline-block; padding:20px 60px; border:3px solid var(--line); color:var(--text); text-decoration:none; font-weight:700; text-transform:uppercase; letter-spacing:2px; transition:0.3s;" onmouseover="this.style.background='black';this.style.color='white'" onmouseout="this.style.background='none';this.style.color='black'">
+                            Download PDF ↗
+                        </a>
                     </div>
                 `;
             }
