@@ -2,192 +2,54 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daniel Situmorang | Portfolio</title>
+    <title>Daniel Situmorang | Portfolio System</title>
     <link href="https://fonts.googleapis.com/css2?family=Inria+Sans:wght@700&family=Karla:wght@400;700&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --bg: #ffffff;
-            --text: #1a1a1a;
-            --accent: #0055ff;
-            --line: #000000;
-        }
-
-        * { box-sizing: border-box; }
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: 'Karla', sans-serif;
-            margin: 0;
-            line-height: 1.6;
-        }
-
-        /* Hero Section */
-        .hero {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 0 10%;
-            border-bottom: 2px solid var(--line);
-        }
-
-        h1 {
-            font-family: 'Inria Sans', sans-serif;
-            font-size: clamp(3rem, 8vw, 6rem);
-            line-height: 0.9;
-            text-transform: uppercase;
-            margin: 0;
-        }
-
-        .contact-bar {
-            margin-top: 2rem;
-            display: flex;
-            gap: 20px;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* Navigation */
-        nav {
-            position: sticky;
-            top: 0;
-            background: var(--bg);
-            padding: 20px 10%;
-            border-bottom: 1px solid #ddd;
-            z-index: 100;
-            display: flex;
-            gap: 30px;
-        }
-
-        nav a {
-            text-decoration: none;
-            color: var(--text);
-            font-weight: 700;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-        }
-
-        /* Section Styling */
-        section {
-            padding: 100px 10%;
-            border-bottom: 1px solid #eee;
-        }
-
-        h2 {
-            font-family: 'Inria Sans', sans-serif;
-            font-size: 2rem;
-            text-transform: uppercase;
-            margin-bottom: 3rem;
-        }
-
-        /* Grid for Projects/Experience */
-        .grid-item {
-            display: grid;
-            grid-template-columns: 200px 1fr;
-            gap: 40px;
-            margin-bottom: 60px;
-        }
-
-        .date { font-size: 0.8rem; color: #666; font-weight: 700; }
-        .title { font-size: 1.2rem; font-weight: 700; margin-bottom: 10px; }
-        
-        /* Buttons */
-        .btn {
-            display: inline-block;
-            padding: 12px 24px;
-            border: 2px solid var(--line);
-            color: var(--text);
-            text-decoration: none;
-            font-weight: 700;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            transition: 0.3s;
-        }
-
-        .btn:hover { background: var(--line); color: var(--bg); }
-
-        a { color: var(--accent); }
-
-        @media (max-width: 768px) {
-            .grid-item { grid-template-columns: 1fr; gap: 10px; }
-            .hero { padding: 0 5%; }
-            nav { padding: 15px 5%; }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="hero" id="home">
+    <header class="hero">
         <h1>Daniel <br>Situmorang</h1>
-        <p style="max-width: 500px; margin-top: 20px;">
-            Third-year Mathematics student at IPB University specializing in quantitative analysis and data modeling[cite: 4].
-        </p>
         <div class="contact-bar">
-            <a href="mailto:dansitumorang@apps.ipb.ac.id">Email [cite: 2]</a>
-            <a href="https://github.com/danmath-py/">GitHub [cite: 2]</a>
-            <a href="https://linkedin.com/in/danieljas">LinkedIn [cite: 2]</a>
+            <a href="assets/Daniel_Situmorang_CV.pdf" target="_blank">Download CV</a>
         </div>
-    </div>
+    </header>
 
-    <nav>
-        <a href="#projects">Projects</a>
-        <a href="#experience">Experience</a>
-        <a href="#cv">Curriculum Vitae</a>
-    </nav>
+    <section id="projects-section">
+        <h2>Projects</h2>
+        <div id="projects-container"></div> </section>
 
-    <section id="projects">
-        <h2>Selected Projects</h2>
-        
-        <div class="grid-item">
-            <div class="date">OCT — NOV 2025 [cite: 14]</div>
-            <div>
-                <div class="title">Mathematics Characteristics Database [cite: 14]</div>
-                <p>Developed an end-to-end data pipeline and web app using Streamlit[cite: 14]. Designed survey frameworks reaching a 150% response rate[cite: 15].</p>
-            </div>
-        </div>
-
-        <div class="grid-item">
-            <div class="date">APR — DEC 2025 [cite: 17]</div>
-            <div>
-                <div class="title">Work Programme Database [cite: 17]</div>
-                <p>Engineered an evaluation system using categorical encoding to transform qualitative data into objective variables for modeling[cite: 17, 18].</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="experience">
+    <section id="experience-section">
         <h2>Experience</h2>
+        <div id="experience-container"></div> </section>
 
-        <div class="grid-item">
-            <div class="date">DEC 2025 — PRESENT [cite: 30, 31]</div>
-            <div>
-                <div class="title">Chairman of the Executive Board | Gumatika IPB </div>
-                <p>Leading 7 departments and 1 bureau, managing high-level organizational strategy[cite: 32].</p>
-            </div>
-        </div>
+    <script>
+        // The "Engine" that builds your site from your folders
+        async function loadContent(folder, containerId) {
+            const container = document.getElementById(containerId);
+            
+            // In a real system, you'd list files. For MVP, we list them manually:
+            const files = folder === 'projects' ? ['project1.json', 'project2.json'] : ['exp1.json', 'exp2.json'];
 
-        <div class="grid-item">
-            <div class="date">AUG 2025 — PRESENT [cite: 37]</div>
-            <div>
-                <div class="title">Calculus II (MAT1211) Lecturer's Assistant </div>
-                <p>Mentoring 50+ students weekly, translating mathematical theory into digestible concepts[cite: 38].</p>
-            </div>
-        </div>
-    </section>
+            for (const file of files) {
+                const response = await fetch(`${folder}/${file}`);
+                const data = await response.json();
+                
+                container.innerHTML += `
+                    <div class="grid-item">
+                        <div class="date">${data.date.toUpperCase()}</div>
+                        <div>
+                            <div class="title">${data.title}</div>
+                            <p>${data.description}</p>
+                        </div>
+                    </div>
+                `;
+            }
+        }
 
-    <section id="cv" style="text-align: center; background: #f9f9f9;">
-        <h2>Curriculum Vitae</h2>
-        <p>Interested in my full background in Applied Math and Finance?</p>
-        <br>
-        <a href="CV.pdf" class="btn" target="_blank">Download CV (PDF)</a>
-    </section>
-
-    <footer style="padding: 40px 10%; font-size: 0.8rem; color: #888;">
-        © 2026 Daniel Situmorang. Built with HTML/CSS. [cite: 2]
-    </footer>
-
+        // Initialize the layout
+        loadContent('projects', 'projects-container');
+        loadContent('experience', 'experience-container');
+    </script>
 </body>
 </html>
