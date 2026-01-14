@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daniel Situmorang | Portfolio System</title>
+    
     <link href="https://fonts.googleapis.com/css2?family=Inria+Sans:wght@700&family=Karla:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
@@ -21,6 +22,7 @@
             font-family: 'Karla', sans-serif;
             margin: 0;
             overflow-x: hidden;
+            line-height: 1.6;
         }
 
         /* Hero Section */
@@ -41,20 +43,46 @@
             margin: 0;
         }
 
+        .contact-bar {
+            margin-top: 2rem;
+            display: flex;
+            gap: 25px;
+        }
+
+        .social-icon {
+            font-size: 1.5rem;
+            color: var(--text);
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .social-icon:hover {
+            color: var(--accent);
+            transform: translateY(-3px);
+        }
+
         /* Carousel Styles */
+        h2 { 
+            font-family: 'Inria Sans', sans-serif; 
+            text-transform: uppercase; 
+            padding: 0 10%; 
+            margin-top: 80px;
+            font-size: 2rem;
+        }
+
         .carousel-container {
             display: flex;
             overflow-x: auto;
             scroll-snap-type: x mandatory;
             gap: 20px;
             padding: 40px 10%;
-            scrollbar-width: none; /* Firefox */
+            scrollbar-width: none;
         }
 
-        .carousel-container::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+        .carousel-container::-webkit-scrollbar { display: none; }
 
         .project-card {
-            flex: 0 0 400px; /* Fixed width for cards */
+            flex: 0 0 400px;
             scroll-snap-align: start;
             border: 2px solid var(--line);
             padding: 30px;
@@ -63,7 +91,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            height: 350px;
+            height: 380px;
             transition: all 0.3s ease;
         }
 
@@ -72,12 +100,13 @@
             color: var(--bg);
         }
 
-        .project-card .date { font-size: 0.7rem; font-weight: 700; margin-bottom: 20px; }
+        .project-card .date { font-size: 0.7rem; font-weight: 700; margin-bottom: 20px; text-transform: uppercase; }
         .project-card .title { font-family: 'Inria Sans'; font-size: 1.5rem; text-transform: uppercase; line-height: 1.1; }
         .project-card .desc { font-size: 0.9rem; margin-top: 15px; }
 
-        /* Experience Section (Vertical Grid) */
+        /* Experience Section */
         section#experience { padding: 80px 10%; }
+        
         .exp-grid {
             display: grid;
             grid-template-columns: 200px 1fr;
@@ -87,25 +116,46 @@
             padding-top: 20px;
         }
 
-        h2 { font-family: 'Inria Sans'; text-transform: uppercase; padding: 0 10%; margin-top: 80px; }
+        /* CV Download Section */
+        #cv-section {
+            padding: 120px 10%;
+            text-align: center;
+            background-color: #f9f9f9;
+            border-top: 2px solid var(--line);
+        }
+
+        .cv-download-btn {
+            display: inline-block;
+            padding: 20px 50px;
+            border: 3px solid var(--line);
+            color: var(--text);
+            text-decoration: none;
+            font-family: 'Inria Sans', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 1rem;
+            letter-spacing: 2px;
+            transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .cv-download-btn:hover {
+            background-color: var(--text);
+            color: var(--bg);
+            transform: scale(1.05);
+        }
+
+        footer {
+            padding: 40px 10%;
+            font-size: 0.8rem;
+            color: #888;
+            border-top: 1px solid #eee;
+        }
 
         @media (max-width: 768px) {
             .project-card { flex: 0 0 85%; }
             .exp-grid { grid-template-columns: 1fr; gap: 10px; }
-        }
-        /* Add this to your <style> section */
-        .social-icon {
-            font-size: 1.5rem; /* Large enough to be accessible but clean */
-            color: var(--text);
-            text-decoration: none;
-            margin-right: 25px;
-            transition: all 0.2s ease;
-            display: inline-block;
-        }
-
-        .social-icon:hover {
-            color: var(--accent);
-            transform: translateY(-3px); /* Subtle Swiss-style "pop" */
+            .hero { padding: 0 5%; }
+            section#experience, #cv-section, footer { padding: 80px 5%; }
         }
     </style>
 </head>
@@ -113,7 +163,10 @@
 
     <div class="hero">
         <h1>Daniel <br>Situmorang</h1>
-        <div class="contact-bar" style="margin-top:20px;">
+        <p style="max-width: 500px; margin-top: 20px; font-size: 1.1rem;">
+            Third-year Mathematics student at IPB University specializing in quantitative analysis, data modeling, and end-to-end data pipelines[cite: 4, 35, 46].
+        </p>
+        <div class="contact-bar">
             <a href="https://linkedin.com/in/danieljas" target="_blank" class="social-icon">
                 <i class="fa-brands fa-linkedin-in"></i>
             </a>
@@ -127,81 +180,84 @@
                 <i class="fa-regular fa-envelope"></i>
             </a>
         </div>
-        <div class="contact-bar" style="margin-top:20px;">
-            <a href="mailto:dansitumorang@apps.ipb.ac.id" style="color:var(--text); text-decoration:none; margin-right:20px;">EMAIL</a>
-            <a href="https://github.com/danmath-py/" style="color:var(--text); text-decoration:none;">GITHUB</a>
-        </div>
     </div>
 
-    <h2>Projects</h2>
-    <div class="carousel-container" id="projects-container">
-        </div>
+    <h2>Selected Projects</h2>
+    <div class="carousel-container" id="projects-container"></div>
 
     <section id="experience">
-        <h2 style="padding:0; margin-top:0; border-bottom: 2px solid var(--line); padding-bottom: 10px;">Experience</h2>
-        <div id="experience-container">
-            </div>
+        <h2 style="padding:0; margin-top:0; border-bottom: 2px solid var(--line); padding-bottom: 10px;">Professional Experience</h2>
+        <div id="experience-container"></div>
     </section>
 
+    <section id="cv-section">
+        <h2 style="padding: 0; margin-top: 0; border: none; font-size: 2.5rem;">Curriculum Vitae</h2>
+        <p style="max-width: 600px; margin: 0 auto 40px auto; font-size: 1.1rem;">
+            Review my full academic background in **Applied Math and Finance**, technical skills in **Python and LaTeX**, and leadership journey[cite: 9, 32, 47].
+        </p>
+        <a href="assets/CV (2).pdf" class="cv-download-btn" target="_blank">
+            Download Full CV (PDF) ↗
+        </a>
+    </section>
+
+    <footer>
+        © 2026 Daniel Juniro Aslacris Situmorang | Bekasi, West Java[cite: 1, 2].
+    </footer>
+
     <script>
-        // Updated Engine for Carousel and Experience
-async function loadPortfolio() {
-    const projectFiles = ['project1.json', 'project2.json', 'project3.json', 'project4.json'];
-    const expFiles = ['exp1.json', 'exp2.json', 'exp3.json']; // Ensure you have these 3 files
-    
-    const pContainer = document.getElementById('projects-container');
-    const eContainer = document.getElementById('experience-container');
-
-    // 1. Load Projects
-    for (const file of projectFiles) {
-        try {
-            const res = await fetch(`projects/${file}`);
-            if (!res.ok) throw new Error(`File not found: ${file}`);
-            const data = await res.json();
+        async function loadPortfolio() {
+            const projectFiles = ['project1.json', 'project2.json', 'project3.json', 'project4.json'];
+            const expFiles = ['exp1.json', 'exp2.json', 'exp3.json'];
             
-            const linkText = data.confidential ? "CONFIDENTIAL • VIEW ON LINKEDIN ↗" : "VIEW PROJECT ↗";
-            const lockIcon = data.confidential ? "🔒 " : "";
+            const pContainer = document.getElementById('projects-container');
+            const eContainer = document.getElementById('experience-container');
 
-            pContainer.innerHTML += `
-                <a href="${data.url}" class="project-card" target="_blank">
-                    <div>
-                        <div class="date">${data.date}</div>
-                        <div class="title">${lockIcon}${data.title}</div>
-                        <p class="desc">${data.description}</p>
-                    </div>
-                    <div style="font-size: 0.7rem; font-weight:700; letter-spacing: 1px; color: var(--accent);">
-                        ${linkText}
-                    </div>
-                </a>
-            `;
-        } catch (err) {
-            console.error("Error loading project:", err);
+            // Load Projects
+            for (const file of projectFiles) {
+                try {
+                    const res = await fetch(`projects/${file}`);
+                    if (!res.ok) throw new Error(`Project file missing: ${file}`);
+                    const data = await res.json();
+                    
+                    const linkText = data.confidential ? "CONFIDENTIAL • LINKEDIN ↗" : "VIEW PROJECT ↗";
+                    const lockIcon = data.confidential ? "🔒 " : "";
+
+                    pContainer.innerHTML += `
+                        <a href="${data.url}" class="project-card" target="_blank">
+                            <div>
+                                <div class="date">${data.date}</div>
+                                <div class="title">${lockIcon}${data.title}</div>
+                                <p class="desc">${data.description}</p>
+                            </div>
+                            <div style="font-size: 0.7rem; font-weight:700; letter-spacing: 1px; color: var(--accent);">
+                                ${linkText}
+                            </div>
+                        </a>
+                    `;
+                } catch (err) { console.error(err); }
+            }
+
+            // Load Experience
+            for (const file of expFiles) {
+                try {
+                    const res = await fetch(`experience/${file}`);
+                    if (!res.ok) throw new Error(`Experience file missing: ${file}`);
+                    const data = await res.json();
+                    
+                    eContainer.innerHTML += `
+                        <div class="exp-grid">
+                            <div style="font-size: 0.8rem; font-weight:700; color:#666; text-transform: uppercase;">${data.date}</div>
+                            <div>
+                                <div style="font-family:'Inria Sans'; font-size:1.2rem; text-transform:uppercase; font-weight:700;">${data.title}</div>
+                                <p style="font-size:0.9rem;">${data.description}</p>
+                            </div>
+                        </div>
+                    `;
+                } catch (err) { console.error(err); }
+            }
         }
-    }
 
-    // 2. Load Experience (Moved OUTSIDE the project loop)
-    for (const file of expFiles) {
-        try {
-            const res = await fetch(`experience/${file}`);
-            if (!res.ok) throw new Error(`File not found: ${file}`);
-            const data = await res.json();
-            
-            eContainer.innerHTML += `
-                <div class="exp-grid">
-                    <div style="font-size: 0.8rem; font-weight:700; color:#666;">${data.date}</div>
-                    <div>
-                        <div style="font-family:'Inria Sans'; font-size:1.2rem; text-transform:uppercase; font-weight:700;">${data.title}</div>
-                        <p style="font-size:0.9rem;">${data.description}</p>
-                    </div>
-                </div>
-            `;
-        } catch (err) {
-            console.error("Error loading experience:", err);
-        }
-    }
-}
-
-loadPortfolio();
+        loadPortfolio();
     </script>
 </body>
 </html>
