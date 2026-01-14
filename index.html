@@ -65,7 +65,7 @@
             text-decoration: none; color: var(--text);
             font-size: 0.75rem; font-weight: 700;
             text-transform: uppercase; position: relative;
-            opacity: 0.6; transition: 0.3s;
+            opacity: 0.5; transition: 0.3s;
         }
 
         nav .nav-links a.active { opacity: 1; }
@@ -86,7 +86,7 @@
 
         /* Sectioning */
         section {
-            min-height: 100vh; padding-top: 100px;
+            min-height: 100vh; padding-top: 120px;
             box-sizing: border-box;
             border-bottom: 1px solid rgba(128,128,128,0.1);
         }
@@ -107,7 +107,7 @@
             border: 1px solid var(--line); background: var(--card-bg);
         }
         .lab-controls label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-        #stochasticCanvas { width: 100%; height: 380px; border: 2px solid var(--line); background: var(--bg); }
+        #stochasticCanvas { width: 100%; height: 380px; border: 2px solid var(--line); background: #000; }
 
         /* Grid Layouts */
         .grid-layout { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; }
@@ -142,14 +142,10 @@
 
         /* Footer Copyright */
         footer {
-            padding: 60px 10%;
+            padding: 80px 10% 40px 10%;
             border-top: 2px solid var(--line);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            font-weight: 700;
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.8rem; text-transform: uppercase; font-weight: 700;
         }
 
         /* Animation System */
@@ -177,29 +173,29 @@
         </div>
     </nav>
 
-    <main id="main-content">
+    <main>
         
         <section id="home">
             <div class="page-header reveal">
                 <div class="hero-grid">
                     <div>
                         <h1>Daniel<br>Situmorang</h1>
-                        <p style="margin-top:20px; font-size:1.1rem;">
-                            Chairman of **Gumatika**. Math student at **IPB University** specializing in computational modeling and quantitative finance.
+                        <p style="margin-top:20px; font-size:1.1rem; max-width: 500px;">
+                            Chairman of **Gumatika**. Math undergrad at **IPB University** specializing in stochastic modeling and data engineering.
                         </p>
                         <div class="lab-controls">
                             <label>Drift (μ): <span id="driftVal">0.05</span></label>
                             <input type="range" id="drift" min="-0.5" max="0.5" step="0.01" value="0.05">
                             <label>Volatility (σ): <span id="volVal">0.2</span></label>
                             <input type="range" id="vol" min="0.01" max="1" step="0.01" value="0.2">
-                            <p style="font-size:0.6rem; margin-top:10px; opacity:0.7; font-weight:700;">MODEL: GEOMETRIC BROWNIAN MOTION</p>
+                            <p style="font-size:0.6rem; margin-top:10px; opacity:0.7; font-weight:700;">LIVE MODEL: GEOMETRIC BROWNIAN MOTION</p>
                         </div>
                     </div>
                     <canvas id="stochasticCanvas" class="reveal"></canvas>
                 </div>
             </div>
             <div class="content-section reveal">
-                <p style="font-size:1.1rem;">Based in **Bekasi, West Java**. Turning complex theory into clean, functional code.</p>
+                <p>Based in **Bekasi, West Java**. Turning complex mathematical theory into functional, scalable code.</p>
                 <div style="margin-top:40px; display:flex; gap:25px;">
                     <a href="https://linkedin.com/in/danieljas" target="_blank" style="color:var(--text); font-size:1.8rem;"><i class="fa-brands fa-linkedin"></i></a>
                     <a href="https://github.com/danmath-py/" target="_blank" style="color:var(--text); font-size:1.8rem;"><i class="fa-brands fa-github"></i></a>
@@ -208,46 +204,50 @@
         </section>
 
         <section id="projects">
-            <div class="page-header reveal"><h1>Projects</h1></div>
-            <div id="projects-container" class="content-section grid-layout"></div>
+            <div class="page-header reveal"><h1>Selected<br>Projects</h1></div>
+            <div id="projects-container" class="content-section grid-layout">
+                </div>
         </section>
 
         <section id="experience">
-            <div class="page-header reveal"><h1>Experience</h1></div>
-            <div id="experience-container" class="content-section"></div>
+            <div class="page-header reveal"><h1>Professional<br>Journey</h1></div>
+            <div id="experience-container" class="content-section">
+                </div>
         </section>
 
         <section id="services">
-            <div class="page-header reveal"><h1>Freelance<br>Services</h1></div>
+            <div class="page-header reveal"><h1>Freelance<br>Portal</h1></div>
             <div class="content-section reveal">
+                <p style="margin-bottom: 40px; font-size: 1.1rem; max-width: 600px;">Official freelance channels for LaTeX typesetting, technical reporting, and custom mathematical simulations.</p>
                 <div class="grid-layout">
                     <a href="https://www.fiverr.com/YOUR_USER" target="_blank" class="service-card reveal">
                         <h3 style="font-family:'Inria Sans';">Fiverr ↗</h3>
-                        <p>Order structured gigs for LaTeX typesetting and Python scripting.</p>
+                        <p>Order specialized gigs for technical document structuring and data automation.</p>
                     </a>
                     <a href="https://www.upwork.com/freelancers/~YOUR_ID" target="_blank" class="service-card reveal">
                         <h3 style="font-family:'Inria Sans';">Upwork ↗</h3>
-                        <p>Long-term quantitative analysis and mathematical research projects.</p>
+                        <p>Long-term partnership for quantitative research and mathematical modeling projects.</p>
                     </a>
                     <a href="https://wa.me/6281298346299" target="_blank" class="service-card reveal" style="background:var(--accent); color:white; border-color:var(--accent);">
-                        <h3 style="font-family:'Inria Sans';">WhatsApp ↗</h3>
-                        <p>Urgent inquiries or direct collaboration for local projects.</p>
+                        <h3 style="font-family:'Inria Sans'; color: white;">WhatsApp ↗</h3>
+                        <p>Direct inquiry for urgent technical support or local IPB projects.</p>
                     </a>
                 </div>
             </div>
         </section>
 
         <section id="cv">
-            <div class="page-header reveal"><h1>CV & Contact</h1></div>
+            <div class="page-header reveal"><h1>Curriculum<br>Vitae</h1></div>
             <div class="content-section reveal">
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 80px;">
                     <div>
-                        <h3 style="font-family:'Inria Sans';">Contact</h3>
+                        <h3 style="font-family:'Inria Sans';">Contact Info</h3>
                         <p><strong>Email:</strong> danielsitumo06@gmail.com</p>
-                        <p><strong>Location:</strong> Bekasi, West Java</p>
+                        <p><strong>Location:</strong> Bekasi, West Java, Indonesia</p>
                     </div>
                     <div style="text-align:center; border: 2px dashed var(--line); padding: 40px;">
-                        <h3 style="font-family:'Inria Sans';">Full Résumé</h3>
+                        <h3 style="font-family:'Inria Sans';">Updated Résumé</h3>
+                        <p style="font-size: 0.9rem; margin-bottom: 20px;">Comprehensive overview of skills in Python, Julia, LaTeX, and VBScript.</p>
                         <a href="assets/CV.pdf" target="_blank" class="cv-download-btn">Download PDF ↗</a>
                     </div>
                 </div>
@@ -255,8 +255,8 @@
         </section>
 
         <footer>
-            <div>© 2026 Daniel Situmorang</div>
-            <div style="font-family:'Inria Sans'; letter-spacing:1px;">Built with Mathematical Precision</div>
+            <div>© 2026 Daniel situmorang</div>
+            <div style="font-family:'Inria Sans'; letter-spacing:1px; opacity: 0.7;">Mathematical Logic × Clean Implementation</div>
         </footer>
 
     </main>
@@ -265,32 +265,75 @@
         const projectFiles = ['project1.json', 'project2.json', 'project3.json', 'project4.json'];
         const expFiles = ['exp1.json', 'exp2.json', 'exp3.json'];
 
+        // 1. Core Logic: Content Loader (Ensures data is present before animations)
+        async function loadDynamicContent() {
+            const projGrid = document.getElementById('projects-container');
+            const expGrid = document.getElementById('experience-container');
+
+            // Load Projects
+            for (const f of projectFiles) {
+                try {
+                    const res = await fetch(`projects/${f}`);
+                    const d = await res.json();
+                    const tags = d.tags ? d.tags.map(t => `<span class="tag">${t}</span>`).join('') : '';
+                    projGrid.innerHTML += `
+                        <a href="${d.url}" target="_blank" class="project-card reveal">
+                            <div>
+                                <div style="font-size:0.7rem; font-weight:700; color:#666;">${d.date}</div>
+                                <div style="font-family:'Inria Sans'; font-size:1.5rem; text-transform:uppercase;">${d.confidential ? '🔒 ' : ''}${d.title}</div>
+                                <p style="font-size:0.9rem; margin-top:15px;">${d.description}</p>
+                                <div class="tag-container">${tags}</div>
+                            </div>
+                            <div style="font-size:0.8rem; font-weight:700; color:var(--accent);">${d.confidential ? "CONFIDENTIAL ↗" : "VIEW PROJECT ↗"}</div>
+                        </a>`;
+                } catch(e) { console.warn("Error loading project file:", f); }
+            }
+
+            // Load Experience
+            for (const f of expFiles) {
+                try {
+                    const res = await fetch(`experience/${f}`);
+                    const d = await res.json();
+                    expGrid.innerHTML += `
+                        <div class="exp-item reveal">
+                            <div style="font-size:0.8rem; font-weight:700; color:#666;">${d.date}</div>
+                            <div>
+                                <div style="font-family:'Inria Sans'; font-size:1.4rem; text-transform:uppercase; font-weight:700;">${d.title}</div>
+                                <p style="font-size:1rem; margin-top:10px;">${d.description}</p>
+                            </div>
+                        </div>`;
+                } catch(e) { console.warn("Error loading exp file:", f); }
+            }
+        }
+
+        // 2. Animation: Scroll Reveal
         function initObserver() {
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) entry.target.classList.add('active');
                 });
-            }, { threshold: 0.1 });
+            }, { threshold: 0.15 });
             document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
         }
 
+        // 3. Navigation: Scrollspy
         function initScrollspy() {
             const sections = document.querySelectorAll('section');
-            const navItems = document.querySelectorAll('.nav-item');
+            const navLinks = document.querySelectorAll('.nav-item');
             window.addEventListener('scroll', () => {
-                let current = '';
+                let current = "";
                 sections.forEach(section => {
-                    if (pageYOffset >= (section.offsetTop - 150)) {
-                        current = section.getAttribute('id');
-                    }
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 200) current = section.getAttribute('id');
                 });
-                navItems.forEach(item => {
-                    item.classList.remove('active');
-                    if (item.getAttribute('href').includes(current)) item.classList.add('active');
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').includes(current)) link.classList.add('active');
                 });
             });
         }
 
+        // 4. Lab: Geometric Brownian Motion Simulation
         let drift = 0.05, vol = 0.2;
         function initStochasticLab() {
             const dIn = document.getElementById('drift'), vIn = document.getElementById('vol');
@@ -305,13 +348,15 @@
             canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight;
             ctx.clearRect(0,0, canvas.width, canvas.height);
             
-            for(let i=0; i<10; i++) {
-                let S = canvas.height/2, steps = 100, dt = 1/steps;
+            // Generate multiple paths
+            for(let i=0; i<12; i++) {
+                let S = canvas.height/2, steps = 120, dt = 1/steps;
                 ctx.beginPath();
                 ctx.strokeStyle = i === 0 ? 'var(--accent)' : 'rgba(150,150,150,0.3)';
                 ctx.lineWidth = i === 0 ? 3 : 1;
                 ctx.moveTo(0, S);
                 for(let t=1; t<=steps; t++) {
+                    // Box-Muller transform for Gaussian noise
                     let u1 = Math.random(), u2 = Math.random();
                     let z = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
                     S -= S * (drift * dt + vol * Math.sqrt(dt) * z);
@@ -321,49 +366,15 @@
             }
         }
 
-        async function loadContent() {
-            const projContainer = document.getElementById('projects-container');
-            for (const f of projectFiles) {
-                try {
-                    const res = await fetch(`projects/${f}`);
-                    const d = await res.json();
-                    const tags = d.tags ? d.tags.map(t => `<span class="tag">${t}</span>`).join('') : '';
-                    projContainer.innerHTML += `
-                        <a href="${d.url}" target="_blank" class="project-card reveal">
-                            <div>
-                                <div style="font-size:0.7rem; font-weight:700; color:#666;">${d.date}</div>
-                                <div style="font-family:'Inria Sans'; font-size:1.5rem; text-transform:uppercase;">${d.confidential ? '🔒 ' : ''}${d.title}</div>
-                                <p style="font-size:0.9rem; margin-top:15px;">${d.description}</p>
-                                <div class="tag-container">${tags}</div>
-                            </div>
-                            <div style="font-size:0.8rem; font-weight:700; color:var(--accent);">${d.confidential ? "CONFIDENTIAL ↗" : "VIEW PROJECT ↗"}</div>
-                        </a>`;
-                } catch(e) {}
-            }
-            const expContainer = document.getElementById('experience-container');
-            for (const f of expFiles) {
-                try {
-                    const res = await fetch(`experience/${f}`);
-                    const d = await res.json();
-                    expContainer.innerHTML += `
-                        <div class="exp-item reveal">
-                            <div style="font-size:0.8rem; font-weight:700; color:#666;">${d.date}</div>
-                            <div>
-                                <div style="font-family:'Inria Sans'; font-size:1.4rem; text-transform:uppercase; font-weight:700;">${d.title}</div>
-                                <p style="font-size:1rem; margin-top:10px;">${d.description}</p>
-                            </div>
-                        </div>`;
-                } catch(e) {}
-            }
-        }
-
+        // Theme Switcher
         function toggleTheme() {
             document.body.classList.toggle('dark-mode');
             document.getElementById('theme-btn').innerText = document.body.classList.contains('dark-mode') ? 'Light' : 'Dark';
         }
 
+        // Initialize Everything
         async function initAll() {
-            await loadContent();
+            await loadDynamicContent();
             initStochasticLab();
             initObserver();
             initScrollspy();
