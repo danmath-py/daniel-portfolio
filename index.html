@@ -3,198 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daniel Situmorang | Portfolio</title>
+    <title>Daniel Situmorang | Portfolio System</title>
     <link href="https://fonts.googleapis.com/css2?family=Inria+Sans:wght@700&family=Karla:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     
     <style>
-        /* CSS Variables for easy Theme Switching */
         :root {
-            --bg: #ffffff;
-            --text: #1a1a1a;
-            --accent: #0055ff;
-            --secondary-text: #666;
-            --line: #1a1a1a;
-            --progress-bg: #eee;
+            --bg: #ffffff; --text: #1a1a1a; --accent: #0055ff; --line: #e0e0e0;
         }
-
-        /* Dark Mode overrides */
-        body.dark-mode {
-            --bg: #1a1a1a;
-            --text: #f0f0f0;
-            --accent: #4d8cff;
-            --secondary-text: #aaa;
-            --line: #f0f0f0;
-            --progress-bg: #333;
+        body.dark {
+            --bg: #111; --text: #eee; --accent: #4d8cff; --line: #333;
         }
 
         body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: 'Karla', sans-serif;
-            margin: 0;
-            padding: 80px 10% 80px 10%;
-            line-height: 1.5;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        /* Progress Bar Styling */
-        #progress-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: var(--progress-bg);
-            z-index: 1000;
-        }
-
-        #progress-bar {
-            height: 100%;
-            width: 0%;
-            background: var(--accent);
-            transition: width 0.1s ease-out;
-        }
-
-        /* Typography */
-        h1, h2, h3 {
-            font-family: 'Inria Sans', sans-serif;
-            text-transform: uppercase;
-            letter-spacing: -0.02em;
-            margin: 0;
-        }
-
-        h1 { font-size: 3.5rem; line-height: 1; margin-bottom: 2rem; }
-        h2 { font-size: 1.2rem; border-top: 2px solid var(--line); padding-top: 0.5rem; margin-top: 4rem; margin-bottom: 2rem; }
-
-        /* Asymmetric Swiss Grid */
-        .grid {
             display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 2rem;
-            margin-bottom: 3rem;
+            grid-template-columns: 300px 1fr; /* Fixed Sidebar + Scrollable Content */
+            margin: 0; font-family: 'Karla', sans-serif; background: var(--bg); color: var(--text);
+            transition: 0.3s ease;
         }
 
-        .project-title { font-weight: 700; margin-bottom: 0.5rem; }
-        .tag { font-size: 0.8rem; color: var(--secondary-text); text-transform: uppercase; }
-
-        a { color: var(--accent); text-decoration: none; }
-        a:hover { text-decoration: underline; }
-
-        /* Theme Toggle Button */
-        #theme-toggle {
-            position: fixed;
-            top: 20px;
-            right: 10%;
-            background: none;
-            border: 1px solid var(--line);
-            color: var(--text);
-            padding: 5px 15px;
-            font-family: 'Karla', sans-serif;
-            text-transform: uppercase;
-            font-size: 0.7rem;
-            cursor: pointer;
-            z-index: 1001;
-            transition: all 0.2s ease;
+        /* Sidebar Styling */
+        aside {
+            height: 100vh; position: fixed; width: 300px; padding: 60px 40px;
+            border-right: 1px solid var(--line); display: flex; flex-direction: column;
         }
 
-        #theme-toggle:hover {
-            background: var(--text);
-            color: var(--bg);
-        }
+        /* Content Area */
+        main { padding: 60px 10%; margin-left: 300px; }
 
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .grid { grid-template-columns: 1fr; gap: 0.5rem; }
-            h1 { font-size: 2.5rem; }
-            body { padding: 60px 5%; }
-        }
+        h1 { font-family: 'Inria Sans'; font-size: 2.5rem; line-height: 1; text-transform: uppercase; margin-bottom: 2rem; }
+        h2 { font-family: 'Inria Sans'; font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; 
+             border-bottom: 1px solid var(--line); padding-bottom: 10px; margin-top: 4rem; }
 
-        /* Subtle Hover Animation */
-        .grid div { transition: transform 0.2s ease; }
-        .grid:hover .project-title { color: var(--accent); }
+        /* Filter Buttons */
+        .filter-btn {
+            background: none; border: 1px solid var(--line); color: var(--text);
+            padding: 5px 12px; font-size: 0.7rem; cursor: pointer; margin-right: 5px; text-transform: uppercase;
+        }
+        .filter-btn.active { background: var(--text); color: var(--bg); }
+
+        /* Project Entry */
+        .project-item { margin: 2rem 0; display: block; transition: 0.3s; opacity: 1; }
+        .project-item.hidden { display: none; opacity: 0; }
+        .project-grid { display: grid; grid-template-columns: 100px 1fr; gap: 20px; }
+        .year { font-size: 0.7rem; color: #888; margin-top: 5px; }
+        
+        .math-block { background: #f9f9f9; padding: 15px; border-left: 3px solid var(--accent); margin: 10px 0; font-size: 0.9rem; }
+        body.dark .math-block { background: #1a1a1a; }
+
+        @media (max-width: 900px) {
+            body { grid-template-columns: 1fr; }
+            aside { position: relative; height: auto; width: 100%; border-right: none; border-bottom: 1px solid var(--line); }
+            main { margin-left: 0; }
+        }
     </style>
 </head>
-<body>
+<body id="body">
 
-    <div id="progress-container"><div id="progress-bar"></div></div>
-    <button id="theme-toggle" onclick="toggleTheme()">Dark Mode</button>
-
-    <header>
-        <h1>Daniel Juniro <br>Aslacris Situmorang</h1>
-        <p style="font-size: 1.2rem; max-width: 600px;">
-            Third-year Mathematics student at IPB University specializing in quantitative analysis and data modeling[cite: 4, 45, 46, 47]. Currently Chairman of Gumatika[cite: 29].
-        </p>
-    </header>
+    <aside>
+        <h1>Daniel Situmorang [cite: 1]</h1>
+        <p style="font-size: 0.9rem;">Third-year Mathematics Student, IPB University [cite: 4, 45].<br>Chairman of Gumatika[cite: 6, 29].</p>
+        
+        <div style="margin-top: auto;">
+            <button class="filter-btn active" onclick="filterSelection('all')">All</button>
+            <button class="filter-btn" onclick="filterSelection('data')">Data</button>
+            <button class="filter-btn" onclick="filterSelection('lead')">Leadership</button>
+            <br><br>
+            <a href="mailto:dansitumorang@apps.ipb.ac.id" style="font-size: 0.8rem;">Email [cite: 2]</a><br>
+            <a href="#" onclick="document.getElementById('body').classList.toggle('dark')" style="font-size: 0.8rem; cursor:pointer;">Toggle Theme</a>
+        </div>
+    </aside>
 
     <main>
-        <h2>Technical Core</h2>
-        <div class="grid">
-            <div>Programming [cite: 9]</div>
-            <div>Python (NumPy, Pandas, Streamlit), Julia, LaTeX, VBScript</div>
-            
-            <div>Data Analysis [cite: 10]</div>
-            <div>Stochastic Processes, Financial Modeling, EDA, Categorical Encoding</div>
+        <h2>Technical Expertise [cite: 8]</h2>
+        <p>Specializing in <strong>Python, Julia, and VBScript</strong> [cite: 9] for applications in:</p>
+        <div class="math-block">
+            Applied Model: \( dX_t = \mu X_t dt + \sigma X_t dW_t \) <br>
+            Focus: Stochastic Processes & Financial Modeling.
         </div>
 
-        <h2>Selected Projects</h2>
+        <h2>Projects & Experience</h2>
         
-        <div class="grid">
-            <div class="tag">Oct — Nov 2025 [cite: 14]</div>
-            <div>
-                <div class="project-title">Mathematics Characteristics Database [cite: 14]</div>
-                <p>Developed an end-to-end data pipeline and custom web-based application using Streamlit to replace traditional forms[cite: 14, 15].</p>
+        <div class="project-item data">
+            <div class="project-grid">
+                <div class="year">2025 </div>
+                <div>
+                    <strong>Mathematics Characteristics Database</strong>
+                    <p>End-to-end pipeline using Streamlit. Achieved 150% target response rate via optimized sampling[cite: 14, 15].</p>
+                </div>
             </div>
         </div>
 
-        <div class="grid">
-            <div class="tag">Apr — Dec 2025 [cite: 17]</div>
-            <div>
-                <div class="project-title">Work Programme Database [cite: 17]</div>
-                <p>Engineered a data-driven internal evaluation system to assess performance quality across organizational departments[cite: 17, 18, 19].</p>
+        <div class="project-item data">
+            <div class="project-grid">
+                <div class="year">2025 [cite: 17]</div>
+                <div>
+                    <strong>Work Programme Database</strong>
+                    <p>Internal evaluation system using categorical encoding to transform qualitative data into objective variables[cite: 17, 18].</p>
+                </div>
             </div>
         </div>
 
-        <h2>Leadership</h2>
-        <div class="grid">
-            <div class="tag">Dec 2025 — Present [cite: 30, 31]</div>
-            <div>
-                <div class="project-title">Chairman of the Executive Board | Gumatika IPB [cite: 28, 29]</div>
-                <p>Leading an organization of 7 departments and 1 bureau, managing high-level strategy and administrative execution[cite: 32, 43].</p>
+        <div class="project-item lead">
+            <div class="project-grid">
+                <div class="year">Present [cite: 31]</div>
+                <div>
+                    <strong>Chairman of the Executive Board | Gumatika IPB</strong>
+                    <p>Directing 7 departments and 1 bureau; managing high-level strategy and organizational identity[cite: 32, 33].</p>
+                </div>
             </div>
         </div>
 
-        <div class="grid">
-            <div class="tag">Aug 2025 — Present [cite: 37]</div>
-            <div>
-                <div class="project-title">Calculus II (MAT1211) Lecturer's Assistant </div>
-                <p>Mentoring 50+ students weekly, translating complex mathematical theory into digestible concepts through tutoring and grading[cite: 38].</p>
+        <div class="project-item lead">
+            <div class="project-grid">
+                <div class="year">2025 [cite: 37]</div>
+                <div>
+                    <strong>Calculus II Lecturer's Assistant</strong>
+                    <p>Mentoring 50+ students on complex mathematical theory[cite: 38].</p>
+                </div>
             </div>
         </div>
     </main>
 
-    <footer>
-        <p>© 2026 | <a href="https://github.com/danmath-py/">GitHub</a> | <a href="https://linkedin.com/in/danieljas">LinkedIn</a> [cite: 2]</p>
-    </footer>
-
     <script>
-        // Progress Bar Logic
-        window.onscroll = function() {
-            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = (winScroll / height) * 100;
-            document.getElementById("progress-bar").style.width = scrolled + "%";
-        };
-
-        // Dark Mode Logic
-        function toggleTheme() {
-            const body = document.body;
-            const btn = document.getElementById("theme-toggle");
-            body.classList.toggle("dark-mode");
-            
-            if (body.classList.contains("dark-mode")) {
-                btn.innerHTML = "Light Mode";
-            } else {
-                btn.innerHTML = "Dark Mode";
+        function filterSelection(c) {
+            var x, i;
+            x = document.getElementsByClassName("project-item");
+            if (c == "all") c = "";
+            for (i = 0; i < x.length; i++) {
+                x[i].classList.add("hidden");
+                if (x[i].className.indexOf(c) > -1) x[i].classList.remove("hidden");
+            }
+            // Add active class to button
+            var btns = document.getElementsByClassName("filter-btn");
+            for (var i = 0; i < btns.length; i++) {
+                btns[i].classList.remove("active");
             }
         }
     </script>
