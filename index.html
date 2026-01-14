@@ -15,6 +15,7 @@
             --accent: #0055ff;
             --line: #000000;
             --card-bg: #ffffff;
+            --nav-bg: rgba(255, 255, 255, 0.9);
         }
 
         body.dark-mode {
@@ -23,7 +24,10 @@
             --accent: #4d8cff;
             --line: #f0f0f0;
             --card-bg: #252525;
+            --nav-bg: rgba(26, 26, 26, 0.9);
         }
+
+        html { scroll-behavior: smooth; }
 
         body {
             background-color: var(--bg);
@@ -40,15 +44,14 @@
             position: fixed;
             top: 0;
             width: 100%;
-            background: var(--bg);
+            background: var(--nav-bg);
             padding: 20px 10%;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid rgba(128,128,128,0.2);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            z-index: 1000;
+            z-index: 2000;
             box-sizing: border-box;
-            opacity: 0.95;
             backdrop-filter: blur(10px);
         }
 
@@ -70,10 +73,16 @@
         nav .nav-links a {
             text-decoration: none;
             color: var(--text);
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 700;
             text-transform: uppercase;
             position: relative;
+            opacity: 0.6;
+            transition: 0.3s;
+        }
+
+        nav .nav-links a.active {
+            opacity: 1;
         }
 
         nav .nav-links a::after {
@@ -83,7 +92,7 @@
             background: var(--accent);
             transition: width 0.3s ease;
         }
-        nav .nav-links a:hover::after { width: 100%; }
+        nav .nav-links a.active::after { width: 100%; }
 
         #theme-btn {
             background: none;
@@ -98,23 +107,16 @@
         }
         #theme-btn:hover { background: var(--text); color: var(--bg); }
 
-        /* Animation System */
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        /* Sectioning */
+        section {
+            min-height: 100vh;
+            padding-top: 100px;
+            box-sizing: border-box;
+            border-bottom: 1px solid rgba(128,128,128,0.1);
         }
-
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Layout Elements */
-        #view-container { margin-top: 80px; min-height: calc(100vh - 80px); }
 
         .page-header {
-            padding: 100px 10% 40px 10%;
+            padding: 40px 10% 40px 10%;
             border-bottom: 2px solid var(--line);
         }
 
@@ -126,6 +128,9 @@
             line-height: 0.85;
         }
 
+        .content-section { padding: 60px 10%; }
+
+        /* Hero & Stochastic Lab */
         .hero-grid {
             display: grid;
             grid-template-columns: 1fr 1.2fr;
@@ -149,12 +154,6 @@
             letter-spacing: 1px;
         }
 
-        input[type="range"] {
-            width: 100%;
-            accent-color: var(--accent);
-            cursor: pointer;
-        }
-
         #stochasticCanvas {
             width: 100%;
             height: 380px;
@@ -162,16 +161,14 @@
             background: var(--bg);
         }
 
-        .content-section { padding: 60px 10%; }
-
-        /* Project Cards */
+        /* Grid Layouts */
         .grid-layout {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 30px;
         }
 
-        .project-card {
+        .project-card, .service-card {
             border: 2px solid var(--line);
             padding: 30px;
             display: flex;
@@ -184,38 +181,20 @@
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s;
         }
 
-        .project-card:hover { transform: translateY(-10px); border-color: var(--accent); }
+        .project-card:hover, .service-card:hover { transform: translateY(-10px); border-color: var(--accent); }
+        .service-card { height: auto; min-height: 250px; }
+        .service-card:hover { background: var(--accent); color: white; }
 
-        .tag-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 15px;
-        }
+        .tag-container { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 15px; }
+        .tag { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; padding: 4px 8px; border: 1px solid var(--line); letter-spacing: 0.5px; }
 
-        .tag {
-            font-size: 0.65rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            padding: 4px 8px;
-            border: 1px solid var(--line);
-            letter-spacing: 0.5px;
-        }
-
-        /* Services Grid */
-        .service-card {
-            border: 1px solid var(--line);
-            padding: 30px;
-            transition: 0.3s;
-        }
-        .service-card:hover { background: var(--accent); color: white; border-color: var(--accent); }
-
+        /* Experience Items */
         .exp-item {
             display: grid;
             grid-template-columns: 200px 1fr;
             gap: 40px;
             margin-bottom: 40px;
-            border-top: 1px solid #eee;
+            border-top: 1px solid rgba(128,128,128,0.2);
             padding-top: 20px;
         }
 
@@ -231,8 +210,18 @@
             letter-spacing: 2px;
             transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
-
         .cv-download-btn:hover { background: var(--text); color: var(--bg); transform: scale(1.05); }
+
+        /* Animation System */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
         @media (max-width: 900px) {
             .hero-grid { grid-template-columns: 1fr; gap: 40px; }
@@ -243,20 +232,100 @@
         }
     </style>
 </head>
-<body>
+<body onload="initAll()">
 
     <nav>
         <a href="#home" class="logo">Daniel Situmorang</a>
         <div class="nav-links">
-            <a href="#projects">Projects</a>
-            <a href="#experience">Experience</a>
-            <a href="#services">Freelance</a>
-            <a href="#cv">CV / Contact</a>
+            <a href="#home" class="nav-item">Home</a>
+            <a href="#projects" class="nav-item">Projects</a>
+            <a href="#experience" class="nav-item">Experience</a>
+            <a href="#services" class="nav-item">Freelance</a>
+            <a href="#cv" class="nav-item">CV</a>
             <button onclick="toggleTheme()" id="theme-btn">Dark</button>
         </div>
     </nav>
 
-    <div id="view-container"></div>
+    <main id="main-content">
+        
+        <section id="home">
+            <div class="page-header reveal">
+                <div class="hero-grid">
+                    <div>
+                        <h1>Daniel<br>Situmorang</h1>
+                        <p style="margin-top:20px; font-size:1.1rem;">
+                            Chairman of **Gumatika**. Math student at **IPB University** specializing in computational modeling and quantitative finance.
+                        </p>
+                        <div class="lab-controls">
+                            <label>Drift (μ): <span id="driftVal">0.05</span></label>
+                            <input type="range" id="drift" min="-0.5" max="0.5" step="0.01" value="0.05">
+                            <label>Volatility (σ): <span id="volVal">0.2</span></label>
+                            <input type="range" id="vol" min="0.01" max="1" step="0.01" value="0.2">
+                            <p style="font-size:0.6rem; margin-top:10px; opacity:0.7; font-weight:700;">MODEL: GEOMETRIC BROWNIAN MOTION</p>
+                        </div>
+                    </div>
+                    <canvas id="stochasticCanvas" class="reveal"></canvas>
+                </div>
+            </div>
+            <div class="content-section reveal">
+                <p style="font-size:1.1rem;">Based in **Bekasi, West Java**. Specialized in turning complex theory into functional code.</p>
+                <div style="margin-top:40px; display:flex; gap:25px;">
+                    <a href="https://linkedin.com/in/danieljas" target="_blank" style="color:var(--text); font-size:1.8rem;"><i class="fa-brands fa-linkedin"></i></a>
+                    <a href="https://github.com/danmath-py/" target="_blank" style="color:var(--text); font-size:1.8rem;"><i class="fa-brands fa-github"></i></a>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects">
+            <div class="page-header reveal"><h1>Projects</h1></div>
+            <div id="projects-container" class="content-section grid-layout">
+                </div>
+        </section>
+
+        <section id="experience">
+            <div class="page-header reveal"><h1>Experience</h1></div>
+            <div id="experience-container" class="content-section">
+                </div>
+        </section>
+
+        <section id="services">
+            <div class="page-header reveal"><h1>Freelance<br>Services</h1></div>
+            <div class="content-section reveal">
+                <div class="grid-layout">
+                    <a href="https://www.fiverr.com/YOUR_USER" target="_blank" class="service-card reveal">
+                        <h3 style="font-family:'Inria Sans'; text-transform:uppercase;">Fiverr ↗</h3>
+                        <p style="font-size:0.9rem;">Order LaTeX typesetting, technical reporting, and Python scripting gigs.</p>
+                    </a>
+                    <a href="https://www.upwork.com/freelancers/~YOUR_ID" target="_blank" class="service-card reveal">
+                        <h3 style="font-family:'Inria Sans'; text-transform:uppercase;">Upwork ↗</h3>
+                        <p style="font-size:0.9rem;">Collaboration on long-term quantitative research and data pipeline projects.</p>
+                    </a>
+                    <a href="https://wa.me/6281298346299" target="_blank" class="service-card reveal" style="background:var(--accent); color:white; border-color:var(--accent);">
+                        <h3 style="font-family:'Inria Sans'; text-transform:uppercase;">WhatsApp ↗</h3>
+                        <p style="font-size:0.9rem;">Direct inquiry for local projects, tutoring, or urgent technical assistance.</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="cv">
+            <div class="page-header reveal"><h1>CV & Contact</h1></div>
+            <div class="content-section reveal">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 80px;">
+                    <div>
+                        <h3 style="font-family:'Inria Sans'; text-transform:uppercase;">Contact</h3>
+                        <p><strong>Email:</strong> danielsitumo06@gmail.com</p>
+                        <p><strong>Location:</strong> Bekasi, West Java</p>
+                    </div>
+                    <div style="text-align:center; border: 2px dashed var(--line); padding: 40px;">
+                        <h3 style="font-family:'Inria Sans'; text-transform:uppercase;">Full Résumé</h3>
+                        <a href="assets/CV.pdf" target="_blank" class="cv-download-btn">Download PDF ↗</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
 
     <script>
         const projectFiles = ['project1.json', 'project2.json', 'project3.json', 'project4.json'];
@@ -272,11 +341,34 @@
             document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
         }
 
-        // Stochastic Lab Logic (Geometric Brownian Motion)
+        // Scrollspy Logic
+        function initScrollspy() {
+            const sections = document.querySelectorAll('section');
+            const navItems = document.querySelectorAll('.nav-item');
+
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    if (pageYOffset >= (sectionTop - 150)) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navItems.forEach(item => {
+                    item.classList.remove('active');
+                    if (item.getAttribute('href').includes(current)) {
+                        item.classList.add('active');
+                    }
+                });
+            });
+        }
+
+        // GBM Logic
         let drift = 0.05, vol = 0.2;
         function initStochasticLab() {
             const dIn = document.getElementById('drift'), vIn = document.getElementById('vol');
-            if (!dIn) return;
             dIn.oninput = (e) => { drift = parseFloat(e.target.value); document.getElementById('driftVal').innerText = drift; runSimulation(); };
             vIn.oninput = (e) => { vol = parseFloat(e.target.value); document.getElementById('volVal').innerText = vol; runSimulation(); };
             runSimulation();
@@ -284,7 +376,6 @@
 
         function runSimulation() {
             const canvas = document.getElementById('stochasticCanvas');
-            if (!canvas) return;
             const ctx = canvas.getContext('2d');
             canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight;
             ctx.clearRect(0,0, canvas.width, canvas.height);
@@ -305,122 +396,43 @@
             }
         }
 
-        const router = {
-            async home() {
-                return `
-                    <div class="page-header reveal">
-                        <div class="hero-grid">
+        async function loadContent() {
+            // Load Projects
+            const projContainer = document.getElementById('projects-container');
+            for (const f of projectFiles) {
+                try {
+                    const res = await fetch(`projects/${f}`);
+                    const d = await res.json();
+                    const tags = d.tags ? d.tags.map(t => `<span class="tag">${t}</span>`).join('') : '';
+                    projContainer.innerHTML += `
+                        <a href="${d.url}" target="_blank" class="project-card reveal">
                             <div>
-                                <h1>Daniel<br>Situmorang</h1>
-                                <p style="margin-top:20px; font-size:1.1rem;">
-                                    Chairman of Gumatika. 
-                                    Math student at IPB University specializing in computational modeling and quantitative finance.
-                                </p>
-                                <div class="lab-controls">
-                                    <label>Drift (μ): <span id="driftVal">0.05</span></label>
-                                    <input type="range" id="drift" min="-0.5" max="0.5" step="0.01" value="0.05">
-                                    <label>Volatility (σ): <span id="volVal">0.2</span></label>
-                                    <input type="range" id="vol" min="0.01" max="1" step="0.01" value="0.2">
-                                    <p style="font-size:0.6rem; margin-top:10px; opacity:0.7; font-weight:700;">MODEL: GEOMETRIC BROWNIAN MOTION</p>
-                                </div>
+                                <div style="font-size:0.7rem; font-weight:700; color:#666;">${d.date}</div>
+                                <div style="font-family:'Inria Sans'; font-size:1.5rem; text-transform:uppercase;">${d.confidential ? '🔒 ' : ''}${d.title}</div>
+                                <p style="font-size:0.9rem; margin-top:15px;">${d.description}</p>
+                                <div class="tag-container">${tags}</div>
                             </div>
-                            <canvas id="stochasticCanvas" class="reveal"></canvas>
-                        </div>
-                    </div>
-                `;
-            },
-
-            async services() {
-                return `
-                    <div class="page-header reveal"><h1>Freelance<br>Services</h1></div>
-                    <div class="content-section reveal">
-                        <p style="margin-bottom:40px; max-width:600px; font-size:1.1rem;">Providing expert mathematical modeling, data analysis, and technical typesetting for global clients.</p>
-                        <div class="grid-layout">
-                            <a href="https://www.fiverr.com/YOUR_USER" target="_blank" class="service-card" style="text-decoration:none; color:inherit;">
-                                <h3 style="font-family:'Inria Sans'; text-transform:uppercase;">Fiverr ↗</h3>
-                                <p style="font-size:0.9rem;">Order structured gigs for LaTeX typesetting and Python scripting.</p>
-                            </a>
-                            <a href="https://www.upwork.com/freelancers/~YOUR_ID" target="_blank" class="service-card" style="text-decoration:none; color:inherit;">
-                                <h3 style="font-family:'Inria Sans'; text-transform:uppercase;">Upwork ↗</h3>
-                                <p style="font-size:0.9rem;">Long-term quantitative analysis and mathematical research projects.</p>
-                            </a>
-                            <a href="https://wa.me/6281298346299" target="_blank" class="service-card" style="text-decoration:none; color:inherit; background:var(--accent); color:white;">
-                                <h3 style="font-family:'Inria Sans'; text-transform:uppercase;">WhatsApp Direct ↗</h3>
-                                <p style="font-size:0.9rem;">Urgent inquiries or direct collaboration for local projects.</p>
-                            </a>
-                        </div>
-                    </div>
-                `;
-            },
-
-            async projects() {
-                let html = `<div class="page-header reveal"><h1>Projects</h1></div><div class="content-section grid-layout">`;
-                for (const file of projectFiles) {
-                    try {
-                        const res = await fetch(`projects/${file}`);
-                        const data = await res.json();
-                        const tagsHtml = data.tags ? data.tags.map(t => `<span class="tag">${t}</span>`).join('') : '';
-                        html += `<a href="${data.url}" target="_blank" class="project-card reveal">
-                            <div>
-                                <div style="font-size:0.75rem; font-weight:700; text-transform:uppercase; margin-bottom:15px; color:#666;">${data.date}</div>
-                                <div style="font-family:'Inria Sans'; font-size:1.6rem; text-transform:uppercase; line-height:1.1;">${data.confidential ? '🔒 ' : ''}${data.title}</div>
-                                <p style="font-size:0.95rem; margin-top:20px;">${data.description}</p>
-                                <div class="tag-container">${tagsHtml}</div>
-                            </div>
-                            <div style="font-size:0.8rem; font-weight:700; color:var(--accent); text-transform:uppercase;">${data.confidential ? "CONFIDENTIAL ↗" : "VIEW PROJECT ↗"}</div>
+                            <div style="font-size:0.8rem; font-weight:700; color:var(--accent);">${d.confidential ? "CONFIDENTIAL ↗" : "VIEW PROJECT ↗"}</div>
                         </a>`;
-                    } catch(e) {}
-                }
-                return html + `</div>`;
-            },
+                } catch(e) {}
+            }
 
-            async experience() {
-                let html = `<div class="page-header reveal"><h1>Experience</h1></div><div class="content-section">`;
-                for (const file of expFiles) {
-                    try {
-                        const res = await fetch(`experience/${file}`);
-                        const data = await res.json();
-                        html += `<div class="exp-item reveal">
-                            <div style="font-size:0.85rem; font-weight:700; color:#666; text-transform:uppercase;">${data.date}</div>
+            // Load Experience
+            const expContainer = document.getElementById('experience-container');
+            for (const f of expFiles) {
+                try {
+                    const res = await fetch(`experience/${f}`);
+                    const d = await res.json();
+                    expContainer.innerHTML += `
+                        <div class="exp-item reveal">
+                            <div style="font-size:0.8rem; font-weight:700; color:#666;">${d.date}</div>
                             <div>
-                                <div style="font-family:'Inria Sans'; font-size:1.5rem; text-transform:uppercase; font-weight:700;">${data.title}</div>
-                                <p style="font-size:1.1rem; margin-top:10px;">${data.description}</p>
+                                <div style="font-family:'Inria Sans'; font-size:1.4rem; text-transform:uppercase; font-weight:700;">${d.title}</div>
+                                <p style="font-size:1rem; margin-top:10px;">${d.description}</p>
                             </div>
                         </div>`;
-                    } catch(e) {}
-                }
-                return html + `</div>`;
-            },
-
-            async cv() {
-                return `
-                    <div class="page-header reveal"><h1>CV & Contact</h1></div>
-                    <div class="content-section reveal">
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 80px;">
-                            <div>
-                                <h3 style="font-family:'Inria Sans'; text-transform:uppercase; margin-bottom:30px; font-size:1.8rem;">Direct Contact</h3>
-                                <p style="font-size:1.1rem;"><strong>Email:</strong> danielsitumo06@gmail.com</p>
-                                <p style="font-size:1.1rem;"><strong>Location:</strong> Bekasi, West Java, Indonesia</p>
-                            </div>
-                            <div style="text-align:center; border: 2px dashed var(--line); padding: 50px;">
-                                <h3 style="font-family:'Inria Sans'; text-transform:uppercase; margin-bottom:20px;">Full Résumé</h3>
-                                <a href="assets/CV.pdf" target="_blank" class="cv-download-btn">Download PDF ↗</a>
-                            </div>
-                        </div>
-                    </div>
-                `;
+                } catch(e) {}
             }
-        };
-
-        async function handleRoute() {
-            const hash = window.location.hash.replace('#', '') || 'home';
-            const container = document.getElementById('view-container');
-            if (router[hash]) {
-                container.innerHTML = await router[hash]();
-                if (hash === 'home') setTimeout(initStochasticLab, 200);
-                setTimeout(initObserver, 100);
-            } else { window.location.hash = '#home'; }
-            window.scrollTo(0, 0);
         }
 
         function toggleTheme() {
@@ -428,8 +440,12 @@
             document.getElementById('theme-btn').innerText = document.body.classList.contains('dark-mode') ? 'Light' : 'Dark';
         }
 
-        window.addEventListener('hashchange', handleRoute);
-        window.addEventListener('load', handleRoute);
+        async function initAll() {
+            await loadContent();
+            initStochasticLab();
+            initObserver();
+            initScrollspy();
+        }
     </script>
 </body>
 </html>
