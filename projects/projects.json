@@ -1,0 +1,34 @@
+[
+  {
+  "title": "Mathematics Characteristics Database",
+  "date": "2025",
+  "description": "Developed an end-to-end data pipeline and web-based application using Streamlit to replace traditional forms.",
+  "url": "https://dabase-karaktermtk.streamlit.app/",
+  "confidential": false,
+  "tags": ["Python", "Streamlit"]
+  },
+  {
+  "title": "Work Programme Database",
+  "date": "Apr — Dec 2025",
+  "description": "Internal evaluation system using categorical encoding to transform qualitative data into objective variables.",
+  "url": "https://linkedin.com/in/danieljas",
+  "confidential": true,
+  "tags": ["Data Analysis", "Categorical Encoding"]
+  },
+  {
+  "title": "Mathematics Alumni Database",
+  "date": "Aug — Nov 2025",
+  "description": "Designed a survey framework optimized for high-quality data acquisition and downstream usability. Coordinated with the Study Program to establish official collection channels.",
+  "url": "https://linkedin.com/in/danieljas",
+  "confidential": true,
+  "tags": ["Database Structuring", "Survey Design"]
+  },
+  {
+  "title": "Mathematics Internship Database",
+  "date": "May — Aug 2025",
+  "description": "Served as Survey Lead, planning and executing outreach strategies efficiently. Successfully exceeded data acquisition goals by collecting over 100% of targeted responses.",
+  "url": "https://linkedin.com/in/danieljas",
+  "confidential": true,
+  "tags": ["Survey Methodology", "Data Strategy"]
+  }
+]

@@ -71,10 +71,10 @@
             gap: 15px; 
             align-items: center;
             overflow-x: auto;
-            scrollbar-width: none; /* Firefox */
-            -ms-overflow-style: none;  /* IE 10+ */
+            scrollbar-width: none;
+            -ms-overflow-style: none;
         }
-        nav .nav-links::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+        nav .nav-links::-webkit-scrollbar { display: none; }
 
         nav .nav-links a {
             text-decoration: none; color: var(--text);
@@ -100,7 +100,6 @@
             margin-left: 10px;
         }
 
-        /* Global Sections */
         section {
             min-height: 100vh; padding-top: 100px;
             box-sizing: border-box;
@@ -116,7 +115,6 @@
 
         .content-section { padding: 40px 5%; }
 
-        /* Responsive Hero Grid */
         .hero-grid { 
             display: grid; 
             grid-template-columns: 1fr; 
@@ -143,7 +141,6 @@
             background: #000; 
         }
 
-        /* Responsive Grid Layouts */
         .grid-layout { 
             display: grid; 
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
@@ -164,7 +161,6 @@
         .tag-container { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 15px; }
         .tag { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; padding: 3px 6px; border: 1px solid var(--line); }
 
-        /* Responsive Experience */
         .exp-item {
             display: grid; grid-template-columns: 1fr; gap: 15px;
             margin-bottom: 30px; border-top: 1px solid rgba(128,128,128,0.2); padding-top: 20px;
@@ -299,16 +295,18 @@
     </main>
 
     <script>
-        const projectFiles = ['project1.json', 'project2.json', 'project3.json', 'project4.json'];
-        const expFiles = ['exp1.json', 'exp2.json', 'exp3.json'];
-
+        // NO MORE FILE ARRAYS NEEDED HERE!
+        
         async function loadDynamicContent() {
             const projGrid = document.getElementById('projects-container');
             const expGrid = document.getElementById('experience-container');
-            for (const f of projectFiles) {
-                try {
-                    const res = await fetch(`projects/${f}`);
-                    const d = await res.json();
+
+            // 1. Fetch Projects from a single JSON array
+            try {
+                const res = await fetch('projects/projects.json');
+                const data = await res.json();
+                projGrid.innerHTML = ''; // Clear container
+                data.forEach(d => {
                     const tags = d.tags ? d.tags.map(t => `<span class="tag">${t}</span>`).join('') : '';
                     projGrid.innerHTML += `
                         <a href="${d.url}" target="_blank" class="project-card reveal">
@@ -320,12 +318,15 @@
                             </div>
                             <div style="font-size:0.75rem; font-weight:700; color:var(--accent);">${d.confidential ? "CONFIDENTIAL, CHECK MY LINKEDIN ↗" : "VIEW PROJECT ↗"}</div>
                         </a>`;
-                } catch(e) {}
-            }
-            for (const f of expFiles) {
-                try {
-                    const res = await fetch(`experience/${f}`);
-                    const d = await res.json();
+                });
+            } catch(e) { console.error("Error loading projects:", e); }
+
+            // 2. Fetch Experience from a single JSON array
+            try {
+                const res = await fetch('experience/experience.json');
+                const data = await res.json();
+                expGrid.innerHTML = ''; // Clear container
+                data.forEach(d => {
                     expGrid.innerHTML += `
                         <div class="exp-item reveal">
                             <div style="font-size:0.75rem; font-weight:700; color:#666;">${d.date}</div>
@@ -334,8 +335,8 @@
                                 <p style="font-size:0.9rem; margin-top:5px;">${d.description}</p>
                             </div>
                         </div>`;
-                } catch(e) {}
-            }
+                });
+            } catch(e) { console.error("Error loading experience:", e); }
         }
 
         function initObserver() {
