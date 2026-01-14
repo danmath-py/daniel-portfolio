@@ -15,7 +15,7 @@
             --accent: #0055ff;
             --line: #000000;
             --card-bg: #ffffff;
-            --nav-bg: rgba(255, 255, 255, 0.9);
+            --nav-bg: rgba(255, 255, 255, 0.95);
         }
 
         body.dark-mode {
@@ -24,7 +24,7 @@
             --accent: #4d8cff;
             --line: #f0f0f0;
             --card-bg: #252525;
-            --nav-bg: rgba(26, 26, 26, 0.9);
+            --nav-bg: rgba(26, 26, 26, 0.95);
         }
 
         html { scroll-behavior: smooth; }
@@ -39,15 +39,19 @@
             transition: background-color 0.4s, color 0.4s;
         }
 
-        /* Fixed Navigation */
+        /* Responsive Navigation */
         nav {
             position: fixed;
             top: 0; width: 100%;
             background: var(--nav-bg);
-            padding: 20px 10%;
+            padding: 15px 5%;
             border-bottom: 1px solid rgba(128,128,128,0.2);
-            display: flex; justify-content: space-between; align-items: center;
-            z-index: 2000; box-sizing: border-box;
+            display: flex; 
+            flex-direction: row;
+            justify-content: space-between; 
+            align-items: center;
+            z-index: 2000; 
+            box-sizing: border-box;
             backdrop-filter: blur(10px);
         }
 
@@ -58,14 +62,26 @@
             text-decoration: none;
             color: var(--text);
             letter-spacing: -1px;
+            font-size: 1.1rem;
+            white-space: nowrap;
         }
 
-        nav .nav-links { display: flex; gap: 25px; align-items: center; }
+        nav .nav-links { 
+            display: flex; 
+            gap: 15px; 
+            align-items: center;
+            overflow-x: auto;
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none;  /* IE 10+ */
+        }
+        nav .nav-links::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+
         nav .nav-links a {
             text-decoration: none; color: var(--text);
-            font-size: 0.75rem; font-weight: 700;
+            font-size: 0.7rem; font-weight: 700;
             text-transform: uppercase; position: relative;
             opacity: 0.5; transition: 0.3s;
+            white-space: nowrap;
         }
 
         nav .nav-links a.active { opacity: 1; }
@@ -79,98 +95,122 @@
         #theme-btn {
             background: none; border: 1px solid var(--line);
             color: var(--text); cursor: pointer;
-            font-size: 0.7rem; font-weight: 700;
-            text-transform: uppercase; padding: 4px 10px; transition: 0.2s;
+            font-size: 0.65rem; font-weight: 700;
+            text-transform: uppercase; padding: 4px 8px; transition: 0.2s;
+            margin-left: 10px;
         }
-        #theme-btn:hover { background: var(--text); color: var(--bg); }
 
-        /* Sectioning */
+        /* Global Sections */
         section {
-            min-height: 100vh; padding-top: 120px;
+            min-height: 100vh; padding-top: 100px;
             box-sizing: border-box;
             border-bottom: 1px solid rgba(128,128,128,0.1);
         }
 
-        .page-header { padding: 40px 10%; border-bottom: 2px solid var(--line); }
+        .page-header { padding: 40px 5%; border-bottom: 2px solid var(--line); }
         .page-header h1 {
             font-family: 'Inria Sans', sans-serif;
-            font-size: clamp(3rem, 10vw, 6rem);
+            font-size: clamp(2.5rem, 8vw, 6rem);
             text-transform: uppercase; margin: 0; line-height: 0.85;
         }
 
-        .content-section { padding: 60px 10%; }
+        .content-section { padding: 40px 5%; }
 
-        /* Hero & Stochastic Lab */
-        .hero-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: start; }
+        /* Responsive Hero Grid */
+        .hero-grid { 
+            display: grid; 
+            grid-template-columns: 1fr; 
+            gap: 40px; 
+            align-items: start; 
+        }
+
+        @media (min-width: 1024px) {
+            .hero-grid { grid-template-columns: 1fr 1.2fr; gap: 60px; }
+            nav { padding: 20px 10%; }
+            .page-header, .content-section { padding-left: 10%; padding-right: 10%; }
+        }
+
         .lab-controls {
-            margin-top: 30px; display: grid; gap: 15px; padding: 25px;
+            margin-top: 30px; display: grid; gap: 12px; padding: 20px;
             border: 1px solid var(--line); background: var(--card-bg);
         }
-        .lab-controls label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-        #stochasticCanvas { width: 100%; height: 380px; border: 2px solid var(--line); background: #000; }
-
-        /* Grid Layouts */
-        .grid-layout { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; }
-        .project-card, .service-card {
-            border: 2px solid var(--line); padding: 30px;
-            display: flex; flex-direction: column; justify-content: space-between;
-            height: 420px; text-decoration: none; color: inherit;
-            background: var(--card-bg); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s;
+        .lab-controls label { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; }
+        
+        #stochasticCanvas { 
+            width: 100%; 
+            height: 300px; 
+            border: 2px solid var(--line); 
+            background: #000; 
         }
 
-        .project-card:hover, .service-card:hover { transform: translateY(-10px); border-color: var(--accent); }
-        .service-card { height: auto; min-height: 250px; }
+        /* Responsive Grid Layouts */
+        .grid-layout { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+            gap: 20px; 
+        }
+
+        .project-card, .service-card {
+            border: 2px solid var(--line); padding: 25px;
+            display: flex; flex-direction: column; justify-content: space-between;
+            min-height: 380px; text-decoration: none; color: inherit;
+            background: var(--card-bg); transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .project-card:hover, .service-card:hover { transform: translateY(-8px); border-color: var(--accent); }
+        .service-card { min-height: 200px; height: auto; }
         .service-card:hover { background: var(--accent); color: white; }
 
-        .tag-container { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 15px; }
-        .tag { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; padding: 4px 8px; border: 1px solid var(--line); letter-spacing: 0.5px; }
+        .tag-container { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 15px; }
+        .tag { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; padding: 3px 6px; border: 1px solid var(--line); }
 
-        /* Experience Items */
+        /* Responsive Experience */
         .exp-item {
-            display: grid; grid-template-columns: 200px 1fr; gap: 40px;
-            margin-bottom: 40px; border-top: 1px solid rgba(128,128,128,0.2); padding-top: 20px;
+            display: grid; grid-template-columns: 1fr; gap: 15px;
+            margin-bottom: 30px; border-top: 1px solid rgba(128,128,128,0.2); padding-top: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .exp-item { grid-template-columns: 200px 1fr; gap: 40px; }
         }
 
         .cv-download-btn {
-            display: inline-block; padding: 20px 50px;
+            display: inline-block; padding: 15px 40px;
             border: 3px solid var(--line); color: var(--text);
             text-decoration: none; font-family: 'Inria Sans', sans-serif;
             font-weight: 700; text-transform: uppercase;
-            letter-spacing: 2px; transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            letter-spacing: 2px; transition: 0.3s;
+            font-size: 0.9rem;
         }
-        .cv-download-btn:hover { background: var(--text); color: var(--bg); transform: scale(1.05); }
 
-        /* Footer Copyright */
         footer {
-            padding: 80px 10% 40px 10%;
+            padding: 40px 5%;
             border-top: 2px solid var(--line);
-            display: flex; justify-content: space-between; align-items: center;
-            font-size: 0.8rem; text-transform: uppercase; font-weight: 700;
+            display: flex; flex-direction: column; 
+            justify-content: center; align-items: center;
+            gap: 15px; font-size: 0.7rem; text-transform: uppercase; font-weight: 700; text-align: center;
         }
 
-        /* Animation System */
-        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        @media (min-width: 768px) {
+            footer { flex-direction: row; justify-content: space-between; padding: 60px 10%; }
+        }
+
+        .reveal { opacity: 0; transform: translateY(20px); transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
-
-        @media (max-width: 900px) {
-            .hero-grid { grid-template-columns: 1fr; gap: 40px; }
-            .exp-item { grid-template-columns: 1fr; gap: 10px; }
-            footer { flex-direction: column; gap: 20px; text-align: center; }
-        }
     </style>
 </head>
 <body onload="initAll()">
 
     <nav>
-        <a href="#home" class="logo">Daniel Situmorang</a>
+        <a href="#home" class="logo">D. Situmorang</a>
         <div class="nav-links">
             <a href="#home" class="nav-item">Home</a>
             <a href="#projects" class="nav-item">Projects</a>
             <a href="#experience" class="nav-item">Experience</a>
             <a href="#services" class="nav-item">Freelance</a>
             <a href="#cv" class="nav-item">CV</a>
-            <button onclick="toggleTheme()" id="theme-btn">Dark</button>
         </div>
+        <button onclick="toggleTheme()" id="theme-btn">Dark</button>
     </nav>
 
     <main>
@@ -180,7 +220,7 @@
                 <div class="hero-grid">
                     <div>
                         <h1>Daniel<br>Situmorang</h1>
-                        <p style="margin-top:20px; font-size:1.1rem; max-width: 500px;">
+                        <p style="margin-top:20px; font-size:1rem; max-width: 500px;">
                             Chairman of <strong>Gumatika</strong>. Math undergrad at <strong>IPB University</strong> specializing in stochastic modeling and data engineering.
                         </p>
                         <div class="lab-controls">
@@ -188,49 +228,47 @@
                             <input type="range" id="drift" min="-0.5" max="0.5" step="0.01" value="0.05">
                             <label>Volatility (σ): <span id="volVal">0.2</span></label>
                             <input type="range" id="vol" min="0.01" max="1" step="0.01" value="0.2">
-                            <p style="font-size:0.6rem; margin-top:10px; opacity:0.7; font-weight:700;">LIVE MODEL: GEOMETRIC BROWNIAN MOTION</p>
+                            <p style="font-size:0.55rem; margin-top:5px; opacity:0.7; font-weight:700;">LIVE MODEL: GEOMETRIC BROWNIAN MOTION</p>
                         </div>
                     </div>
                     <canvas id="stochasticCanvas" class="reveal"></canvas>
                 </div>
             </div>
             <div class="content-section reveal">
-                <p>Based in <strong>Bekasi, West Java</strong>. Turning complex mathematical theory into functional, scalable code.</p>
-                <div style="margin-top:40px; display:flex; gap:25px;">
-                    <a href="https://linkedin.com/in/danieljas" target="_blank" style="color:var(--text); font-size:1.8rem;"><i class="fa-brands fa-linkedin"></i></a>
-                    <a href="https://github.com/danmath-py/" target="_blank" style="color:var(--text); font-size:1.8rem;"><i class="fa-brands fa-github"></i></a>
+                <p style="font-size: 0.95rem;">Based in <strong>Bekasi</strong>. Turning complex theory into functional code.</p>
+                <div style="margin-top:30px; display:flex; gap:20px;">
+                    <a href="https://linkedin.com/in/danieljas" target="_blank" style="color:var(--text); font-size:1.5rem;"><i class="fa-brands fa-linkedin"></i></a>
+                    <a href="https://github.com/danmath-py/" target="_blank" style="color:var(--text); font-size:1.5rem;"><i class="fa-brands fa-github"></i></a>
                 </div>
             </div>
         </section>
 
         <section id="projects">
             <div class="page-header reveal"><h1>Selected<br>Projects</h1></div>
-            <div id="projects-container" class="content-section grid-layout">
-                </div>
+            <div id="projects-container" class="content-section grid-layout"></div>
         </section>
 
         <section id="experience">
             <div class="page-header reveal"><h1>Professional<br>Journey</h1></div>
-            <div id="experience-container" class="content-section">
-                </div>
+            <div id="experience-container" class="content-section"></div>
         </section>
 
         <section id="services">
             <div class="page-header reveal"><h1>Freelance<br>Portal</h1></div>
             <div class="content-section reveal">
-                <p style="margin-bottom: 40px; font-size: 1.1rem; max-width: 600px;">Official freelance channels for LaTeX typesetting, technical reporting, and custom mathematical simulations.</p>
+                <p style="margin-bottom: 30px; font-size: 1rem; max-width: 600px;">Expert LaTeX typesetting, data pipelines, and quantitative research.</p>
                 <div class="grid-layout">
                     <a href="https://www.fiverr.com/s/R7wkpkl" target="_blank" class="service-card reveal">
                         <h3 style="font-family:'Inria Sans';">Fiverr ↗</h3>
-                        <p>Order specialized gigs for technical document structuring and data automation.</p>
+                        <p style="font-size: 0.85rem;">Order technical document gigs and specialized data automation scripts.</p>
                     </a>
-                    <a href="https://www.upwork.com/freelancers/~016fa45a475f337f30?mp_source=share" target="_blank" class="service-card reveal">
+                    <a href="https://www.upwork.com/freelancers/~016fa45a475f337f30" target="_blank" class="service-card reveal">
                         <h3 style="font-family:'Inria Sans';">Upwork ↗</h3>
-                        <p>Long-term partnership for quantitative research and mathematical modeling projects.</p>
+                        <p style="font-size: 0.85rem;">Collaboration on long-term modeling and mathematical research.</p>
                     </a>
                     <a href="https://wa.me/6281298346299" target="_blank" class="service-card reveal" style="background:var(--accent); color:white; border-color:var(--accent);">
                         <h3 style="font-family:'Inria Sans'; color: white;">WhatsApp ↗</h3>
-                        <p>Direct inquiry for urgent technical support or local IPB projects.</p>
+                        <p style="font-size: 0.85rem;">Direct inquiry for urgent technical support or consultations.</p>
                     </a>
                 </div>
             </div>
@@ -239,15 +277,14 @@
         <section id="cv">
             <div class="page-header reveal"><h1>Curriculum<br>Vitae</h1></div>
             <div class="content-section reveal">
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 80px;">
+                <div style="display: grid; grid-template-columns: 1fr; gap: 40px;">
                     <div>
                         <h3 style="font-family:'Inria Sans';">Contact Info</h3>
                         <p><strong>Email:</strong> danielsitumo06@gmail.com</p>
-                        <p><strong>Location:</strong> Bekasi, West Java, Indonesia</p>
+                        <p><strong>Location:</strong> Bekasi, Indonesia</p>
                     </div>
-                    <div style="text-align:center; border: 2px dashed var(--line); padding: 40px;">
-                        <h3 style="font-family:'Inria Sans';">Updated Résumé</h3>
-                        <p style="font-size: 0.9rem; margin-bottom: 20px;">Comprehensive overview of skills in Python, Julia, LaTeX, and VBScript.</p>
+                    <div style="text-align:center; border: 2px dashed var(--line); padding: 30px;">
+                        <h3 style="font-family:'Inria Sans';">Résumé</h3>
                         <a href="assets/CV.pdf" target="_blank" class="cv-download-btn">Download PDF ↗</a>
                     </div>
                 </div>
@@ -255,7 +292,7 @@
         </section>
 
         <footer>
-            <div>© 2026 Daniel situmorang</div>
+            <div>© 2026 Daniel Situmorang</div>
             <div style="font-family:'Inria Sans'; letter-spacing:1px; opacity: 0.7;">Mathematical Logic × Clean Implementation</div>
         </footer>
 
@@ -265,12 +302,9 @@
         const projectFiles = ['project1.json', 'project2.json', 'project3.json', 'project4.json'];
         const expFiles = ['exp1.json', 'exp2.json', 'exp3.json'];
 
-        // 1. Core Logic: Content Loader (Ensures data is present before animations)
         async function loadDynamicContent() {
             const projGrid = document.getElementById('projects-container');
             const expGrid = document.getElementById('experience-container');
-
-            // Load Projects
             for (const f of projectFiles) {
                 try {
                     const res = await fetch(`projects/${f}`);
@@ -279,52 +313,47 @@
                     projGrid.innerHTML += `
                         <a href="${d.url}" target="_blank" class="project-card reveal">
                             <div>
-                                <div style="font-size:0.7rem; font-weight:700; color:#666;">${d.date}</div>
-                                <div style="font-family:'Inria Sans'; font-size:1.5rem; text-transform:uppercase;">${d.confidential ? '🔒 ' : ''}${d.title}</div>
-                                <p style="font-size:0.9rem; margin-top:15px;">${d.description}</p>
+                                <div style="font-size:0.65rem; font-weight:700; color:#666;">${d.date}</div>
+                                <div style="font-family:'Inria Sans'; font-size:1.3rem; text-transform:uppercase;">${d.confidential ? '🔒 ' : ''}${d.title}</div>
+                                <p style="font-size:0.85rem; margin-top:10px;">${d.description}</p>
                                 <div class="tag-container">${tags}</div>
                             </div>
-                            <div style="font-size:0.8rem; font-weight:700; color:var(--accent);">${d.confidential ? "CONFIDENTIAL ↗" : "VIEW PROJECT ↗"}</div>
+                            <div style="font-size:0.75rem; font-weight:700; color:var(--accent);">${d.confidential ? "CONFIDENTIAL ↗" : "VIEW PROJECT ↗"}</div>
                         </a>`;
-                } catch(e) { console.warn("Error loading project file:", f); }
+                } catch(e) {}
             }
-
-            // Load Experience
             for (const f of expFiles) {
                 try {
                     const res = await fetch(`experience/${f}`);
                     const d = await res.json();
                     expGrid.innerHTML += `
                         <div class="exp-item reveal">
-                            <div style="font-size:0.8rem; font-weight:700; color:#666;">${d.date}</div>
+                            <div style="font-size:0.75rem; font-weight:700; color:#666;">${d.date}</div>
                             <div>
-                                <div style="font-family:'Inria Sans'; font-size:1.4rem; text-transform:uppercase; font-weight:700;">${d.title}</div>
-                                <p style="font-size:1rem; margin-top:10px;">${d.description}</p>
+                                <div style="font-family:'Inria Sans'; font-size:1.3rem; text-transform:uppercase; font-weight:700;">${d.title}</div>
+                                <p style="font-size:0.9rem; margin-top:5px;">${d.description}</p>
                             </div>
                         </div>`;
-                } catch(e) { console.warn("Error loading exp file:", f); }
+                } catch(e) {}
             }
         }
 
-        // 2. Animation: Scroll Reveal
         function initObserver() {
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) entry.target.classList.add('active');
                 });
-            }, { threshold: 0.15 });
+            }, { threshold: 0.1 });
             document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
         }
 
-        // 3. Navigation: Scrollspy
         function initScrollspy() {
             const sections = document.querySelectorAll('section');
             const navLinks = document.querySelectorAll('.nav-item');
             window.addEventListener('scroll', () => {
                 let current = "";
                 sections.forEach(section => {
-                    const sectionTop = section.offsetTop;
-                    if (pageYOffset >= sectionTop - 200) current = section.getAttribute('id');
+                    if (pageYOffset >= section.offsetTop - 120) current = section.getAttribute('id');
                 });
                 navLinks.forEach(link => {
                     link.classList.remove('active');
@@ -333,7 +362,6 @@
             });
         }
 
-        // 4. Lab: Geometric Brownian Motion Simulation
         let drift = 0.05, vol = 0.2;
         function initStochasticLab() {
             const dIn = document.getElementById('drift'), vIn = document.getElementById('vol');
@@ -347,16 +375,13 @@
             const ctx = canvas.getContext('2d');
             canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight;
             ctx.clearRect(0,0, canvas.width, canvas.height);
-            
-            // Generate multiple paths
-            for(let i=0; i<12; i++) {
-                let S = canvas.height/2, steps = 120, dt = 1/steps;
+            for(let i=0; i<10; i++) {
+                let S = canvas.height/2, steps = 100, dt = 1/steps;
                 ctx.beginPath();
                 ctx.strokeStyle = i === 0 ? 'var(--accent)' : 'rgba(150,150,150,0.3)';
                 ctx.lineWidth = i === 0 ? 3 : 1;
                 ctx.moveTo(0, S);
                 for(let t=1; t<=steps; t++) {
-                    // Box-Muller transform for Gaussian noise
                     let u1 = Math.random(), u2 = Math.random();
                     let z = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
                     S -= S * (drift * dt + vol * Math.sqrt(dt) * z);
@@ -366,13 +391,11 @@
             }
         }
 
-        // Theme Switcher
         function toggleTheme() {
             document.body.classList.toggle('dark-mode');
             document.getElementById('theme-btn').innerText = document.body.classList.contains('dark-mode') ? 'Light' : 'Dark';
         }
 
-        // Initialize Everything
         async function initAll() {
             await loadDynamicContent();
             initStochasticLab();
