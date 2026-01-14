@@ -19,12 +19,12 @@
             color: var(--text);
             font-family: 'Karla', sans-serif;
             margin: 0;
-            line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        /* Hero Section - Restored */
+        /* Hero Section */
         .hero {
-            height: 100vh;
+            height: 90vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -40,76 +40,57 @@
             margin: 0;
         }
 
-        .contact-bar {
-            margin-top: 2rem;
+        /* Carousel Styles */
+        .carousel-container {
             display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
             gap: 20px;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            padding: 40px 10%;
+            scrollbar-width: none; /* Firefox */
         }
 
-        nav {
-            position: sticky;
-            top: 0;
-            background: var(--bg);
-            padding: 20px 10%;
-            border-bottom: 1px solid #ddd;
-            z-index: 100;
-            display: flex;
-            gap: 30px;
-        }
+        .carousel-container::-webkit-scrollbar { display: none; } /* Chrome/Safari */
 
-        nav a {
+        .project-card {
+            flex: 0 0 400px; /* Fixed width for cards */
+            scroll-snap-align: start;
+            border: 2px solid var(--line);
+            padding: 30px;
             text-decoration: none;
-            color: var(--text);
-            font-weight: 700;
-            font-size: 0.7rem;
-            text-transform: uppercase;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 350px;
+            transition: all 0.3s ease;
         }
 
-        section { padding: 80px 10%; border-bottom: 1px solid #eee; }
-
-        h2 {
-            font-family: 'Inria Sans', sans-serif;
-            font-size: 1.5rem;
-            text-transform: uppercase;
-            margin-bottom: 3rem;
-            border-top: 2px solid var(--text);
-            padding-top: 10px;
-            display: inline-block;
+        .project-card:hover {
+            background-color: var(--text);
+            color: var(--bg);
         }
 
-        /* The Asymmetric Grid Item */
-        .grid-item {
+        .project-card .date { font-size: 0.7rem; font-weight: 700; margin-bottom: 20px; }
+        .project-card .title { font-family: 'Inria Sans'; font-size: 1.5rem; text-transform: uppercase; line-height: 1.1; }
+        .project-card .desc { font-size: 0.9rem; margin-top: 15px; }
+
+        /* Experience Section (Vertical Grid) */
+        section#experience { padding: 80px 10%; }
+        .exp-grid {
             display: grid;
             grid-template-columns: 200px 1fr;
             gap: 40px;
-            margin-bottom: 60px;
-            transition: transform 0.2s ease;
+            margin-bottom: 40px;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
         }
 
-        .grid-item:hover { transform: translateX(10px); color: var(--accent); }
-
-        .date { font-size: 0.8rem; color: #666; font-weight: 700; text-transform: uppercase; }
-        .title { font-size: 1.3rem; font-weight: 700; margin-bottom: 10px; font-family: 'Inria Sans'; text-transform: uppercase;}
-        
-        .btn {
-            display: inline-block;
-            padding: 12px 24px;
-            border: 2px solid var(--line);
-            color: var(--text);
-            text-decoration: none;
-            font-weight: 700;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-        }
-
-        .btn:hover { background: var(--line); color: var(--bg); }
+        h2 { font-family: 'Inria Sans'; text-transform: uppercase; padding: 0 10%; margin-top: 80px; }
 
         @media (max-width: 768px) {
-            .grid-item { grid-template-columns: 1fr; gap: 10px; }
-            .hero, nav, section { padding-left: 5%; padding-right: 5%; }
+            .project-card { flex: 0 0 85%; }
+            .exp-grid { grid-template-columns: 1fr; gap: 10px; }
         }
     </style>
 </head>
@@ -117,57 +98,64 @@
 
     <div class="hero">
         <h1>Daniel <br>Situmorang</h1>
-        <p style="max-width: 500px; margin-top: 20px;">
-            Third-year Mathematics student at IPB University specializing in quantitative analysis and data modeling.
-        </p>
-        <div class="contact-bar">
-            <a href="mailto:dansitumorang@apps.ipb.ac.id">Email</a>
-            <a href="https://github.com/danmath-py/">GitHub</a>
-            <a href="https://linkedin.com/in/danieljas">LinkedIn</a>
+        <div class="contact-bar" style="margin-top:20px;">
+            <a href="mailto:dansitumorang@apps.ipb.ac.id" style="color:var(--text); text-decoration:none; margin-right:20px;">EMAIL</a>
+            <a href="https://github.com/danmath-py/" style="color:var(--text); text-decoration:none;">GITHUB</a>
         </div>
     </div>
 
-    <nav>
-        <a href="#projects">Projects</a>
-        <a href="#experience">Experience</a>
-        <a href="assets/CV.pdf" target="_blank">CV</a>
-    </nav>
-
-    <section id="projects">
-        <h2>Selected Projects</h2>
-        <div id="projects-container"></div>
-    </section>
+    <h2>Projects</h2>
+    <div class="carousel-container" id="projects-container">
+        </div>
 
     <section id="experience">
-        <h2>Experience</h2>
-        <div id="experience-container"></div>
+        <h2 style="padding:0; margin-top:0; border-bottom: 2px solid var(--line); padding-bottom: 10px;">Experience</h2>
+        <div id="experience-container">
+            </div>
     </section>
 
     <script>
-        // Data engine to load structured JSON from your folders
-        async function loadContent(folder, containerId, files) {
-            const container = document.getElementById(containerId);
-            for (const file of files) {
-                try {
-                    const response = await fetch(`${folder}/${file}`);
-                    const data = await response.json();
-                    
-                    container.innerHTML += `
-                        <div class="grid-item">
+        // Updated Engine for Carousel and Experience
+        async function loadPortfolio() {
+            // Load Projects into Carousel
+            const projectFiles = ['project1.json', 'project2.json']; // Add your filenames
+            const pContainer = document.getElementById('projects-container');
+
+            for (const file of projectFiles) {
+                const res = await fetch(`projects/${file}`);
+                const data = await res.json();
+                pContainer.innerHTML += `
+                    <a href="${data.url}" class="project-card" target="_blank">
+                        <div>
                             <div class="date">${data.date}</div>
-                            <div>
-                                <div class="title">${data.title}</div>
-                                <p>${data.description}</p>
-                            </div>
+                            <div class="title">${data.title}</div>
+                            <p class="desc">${data.description}</p>
                         </div>
-                    `;
-                } catch (e) { console.error("Error loading " + file, e); }
+                        <div style="font-size: 0.7rem; font-weight:700;">VIEW PROJECT ↗</div>
+                    </a>
+                `;
+            }
+
+            // Load Experience into Vertical Grid
+            const expFiles = ['exp1.json', 'exp2.json']; // Add your filenames
+            const eContainer = document.getElementById('experience-container');
+
+            for (const file of expFiles) {
+                const res = await fetch(`experience/${file}`);
+                const data = await res.json();
+                eContainer.innerHTML += `
+                    <div class="exp-grid">
+                        <div style="font-size: 0.8rem; font-weight:700; color:#666;">${data.date}</div>
+                        <div>
+                            <div style="font-family:'Inria Sans'; font-size:1.2rem; text-transform:uppercase; font-weight:700;">${data.title}</div>
+                            <p style="font-size:0.9rem;">${data.description}</p>
+                        </div>
+                    </div>
+                `;
             }
         }
 
-        // Add your filenames here as you create them in the folders
-        loadContent('projects', 'projects-container', ['project1.json', 'project2.json']);
-        loadContent('experience', 'experience-container', ['exp1.json', 'exp2.json']);
+        loadPortfolio();
     </script>
 </body>
 </html>
